@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import SimpleMap from './map';
-import SearchField from './search';
-import Login_Reg_Button from './login_register';
+import SimpleMap from '../components/map';
+import SearchField from '../components/search';
+import Login_Reg_Button from '../components/login_register';
 
 class App extends Component {
 	render() {
