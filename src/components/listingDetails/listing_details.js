@@ -106,7 +106,7 @@ export default function Listing_Details() {
                 <Paper className={classes.listing_details_box_container}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <p style={{ fontSize: 20, paddingLeft: '5%'}}>Listing Details:</p>
-                        <CloseIcon style={{ fontSize: 40, cursor: 'pointer', paddingLeft: '68%',color: 'grey'}} onClick={hide_box}/>
+                        <CloseIcon style={{ fontSize: 40, cursor: 'pointer', paddingLeft: '67.5%',color: 'grey'}} onClick={hide_box}/>
                     </div>
                     <div className={classes.listing_details_inner_container}>
                         <Typography className={classes.field}>Owner: John S. Park</Typography>
