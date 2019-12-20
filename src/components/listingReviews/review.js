@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     },
     comment_container: {
         width: 520,
-        height: 300,
+        height: 350,
         margin: '10px 0 0 0',
         overflowY: 'auto'
     },

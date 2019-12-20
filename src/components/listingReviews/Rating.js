@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     },
     review_container: {
         width: 600,
-        height: 560,
+        height: 620,
         background: 'white',
         position: 'fixed',
         top: '10%',
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
     inner_container: {
         width: 1500,
-        height: 560,
+        height: 570,
         position: 'absolute',
         transition: '1s',
         zIndex: '-1'
