@@ -10,7 +10,7 @@ import {Checkbox, FormControlLabel} from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     listing_details_button: {
         position: 'fixed',
-        right: '20%',
+        right: '19.5%',
         top: '2%',
         float: 'right',
         backgroundColor: '#404040',

@@ -4,7 +4,8 @@ import {Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import AmenitiesList from "../../components/amenitiesList/amenities";
 import Listing_Details from "../../components/listingDetails/listing_details";
-import RatingBox from "../../components/reviews/Rating";
+import RatingBox from "../../components/listingReviews/Rating";
+import Listing_Pictures from "../../components/listingPictures/listing_pictures";
 
 class Listing extends Component {
 
@@ -24,6 +25,7 @@ class Listing extends Component {
                 <AmenitiesList/>
                 <Listing_Details/>
                 <RatingBox/>
+                <Listing_Pictures/>
             </div>
         );
     }

@@ -9,7 +9,7 @@ import AddReview from './add_review'
 const useStyles = makeStyles(theme => ({
     reviews_button: {
         position: 'fixed',
-        right: '13%',
+        right: '12%',
         top: '2%',
         float: 'right',
         backgroundColor: '#404040',
