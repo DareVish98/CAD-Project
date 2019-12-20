@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import SimpleMap from '../components/map';
+import SimpleMap from '../../components/map/map';
 import {Typography} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
-import AmenitiesList from "../components/amenities";
-import Listing_Details from "../components/listing_details";
+import AmenitiesList from "../../components/amenitiesList/amenities";
+import Listing_Details from "../../components/listingDetails/listing_details";
+import RatingBox from "../../components/reviews/Rating";
 
 class Listing extends Component {
 
@@ -22,6 +23,7 @@ class Listing extends Component {
                 </Paper>
                 <AmenitiesList/>
                 <Listing_Details/>
+                <RatingBox/>
             </div>
         );
     }

@@ -99,14 +99,14 @@ export default function Listing_Details() {
 
     return (
         <div>
-            <Button variant="contained" className={classes.listing_details_button} onClick={display_box}>
+            <Button variant="contained" color="primary" className={classes.listing_details_button} onClick={display_box}>
                 Details
             </Button>
             {open? (
                 <Paper className={classes.listing_details_box_container}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <p style={{ fontSize: 20, paddingLeft: '5%'}}>Listing Details:</p>
-                        <CloseIcon style={{ fontSize: 25, cursor: 'pointer', paddingLeft: '70%',color: '#222222'}} onClick={hide_box}/>
+                        <CloseIcon style={{ fontSize: 40, cursor: 'pointer', paddingLeft: '68%',color: 'grey'}} onClick={hide_box}/>
                     </div>
                     <div className={classes.listing_details_inner_container}>
                         <Typography className={classes.field}>Owner: John S. Park</Typography>
