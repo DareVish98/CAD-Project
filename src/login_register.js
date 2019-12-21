@@ -103,7 +103,7 @@ export default function Login_Reg_Button() {
 			<TextField id="register_password" fullWidth variant="outlined" label="Password" className={classes.input_field}/>
 			<TextField id="register_email" fullWidth variant="outlined" label="Email" className={classes.input_field}/>
 			<TextField id="phone" fullWidth variant="outlined" label="Phone" className={classes.input_field}/>
-			<Button variant="contained" color="secondary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}}>
+			<Button variant="contained" color="primary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}}>
 			Register
 			</Button>
 			<Typography variant="subtitle1" gutterBottom style={{color: 'blue', cursor: 'pointer'}} onClick={jump}>
