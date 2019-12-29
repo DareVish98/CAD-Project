@@ -5,6 +5,10 @@ import Paper from '@material-ui/core/Paper';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import axios from "axios";
+
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const phoneRegex = /^[0-9]*$/;
 
 const useStyles = makeStyles(theme => ({
   login_register_button: {
@@ -41,10 +45,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Login_Reg_Button() {
+export default function Login_Reg_Button({onLoginRegister}) {
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(true);
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [newUsername, setNewUsername] = React.useState('');
+  const [newPassword, setNewPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+
   
   const display_box = () => {
 	  setOpen(!open);
@@ -52,6 +64,12 @@ export default function Login_Reg_Button() {
   
   const hide_box = () => {
 	  setOpen(false);
+	  setUsername('');
+	  setPassword('');
+	  setNewPassword('');
+	  setNewUsername('');
+	  setEmail('');
+	  setPhone('');
   };
   
   var state;
@@ -69,10 +87,61 @@ export default function Login_Reg_Button() {
   }
   
   const jump = () => {
-	  setIsLogin(!isLogin);
+      setIsLogin(!isLogin);
   };
-  
-  
+
+  function validateLogin() {
+      return (username!=='' && password!=='');
+  }
+
+  function validateRegister() {
+      return (newUsername!=='' && newPassword!=='' && emailRegex.test(email) && phoneRegex.test(phone));
+  }
+
+  async function submitLogin() {
+      //TODO: check username + password with back end (axios call)
+      await axios.post(
+          'link',
+          {username: username, password: password},
+          {headers: {'Content-Type': 'application/json'}}
+      ).then( (response) => {
+          if (true) {
+              onLoginRegister(username, password);
+              hide_box();
+          }
+      }).catch( (error) => {
+          // if (error.response) {
+          //     alert(error.response.status + ' request failed: ' + error.response.data);
+          // } else {
+          //     alert('Request failed: ' + error.message);
+          // }
+          onLoginRegister(username, password);
+          hide_box();
+      });
+  }
+
+  async function submitRegister() {
+      //TODO: check newUsername (needs to be unique) + newPassword + email + phone (save) to back end (axios call)
+      await axios.post(
+          'link',
+          {username: newUsername, password: newPassword, email: email, phone: phone},
+          {headers: {'Content-Type': 'application/json'}}
+      ).then( (response) => {
+          if (true) {
+              onLoginRegister(newUsername, newPassword);
+              hide_box();
+          }
+      }).catch( (error) => {
+          // if (error.response) {
+          //     alert(error.response.status + ' request failed: ' + error.response.data);
+          // } else {
+          //     alert('Request failed: ' + error.message);
+          // }
+          onLoginRegister(newUsername, newPassword);
+          hide_box();
+      });
+  }
+
   return (
     <div>
       <Button variant="contained" color="primary" className={classes.login_register_button} onClick={display_box}>
@@ -86,9 +155,12 @@ export default function Login_Reg_Button() {
 			<Typography variant="h4" gutterBottom>
 			Login
 			</Typography>
-			<TextField id="login_username" fullWidth variant="outlined" label="Username" className={classes.input_field}/>
-			<TextField id="login_password" fullWidth variant="outlined" label="Password" className={classes.input_field}/>
-			<Button variant="contained" color="primary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}}>
+			<TextField id="login_username" fullWidth variant="outlined" label="Username" className={classes.input_field}
+                       value={username} onChange={e => setUsername(e.target.value)}/>
+			<TextField id="login_password" fullWidth variant="outlined" label="Password" className={classes.input_field}
+                       type={"password"} value={password} onChange={e => setPassword(e.target.value)}/>
+			<Button variant="contained" color="primary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}} disabled={!validateLogin()}
+                    onClick={() =>submitLogin()}>
 			Login
 			</Button>
 			<Typography variant="subtitle1" gutterBottom style={{color: 'blue', cursor: 'pointer'}} onClick={jump}>
@@ -99,11 +171,16 @@ export default function Login_Reg_Button() {
 			<Typography variant="h4" gutterBottom>
 			Register
 			</Typography>
-			<TextField id="register_username" fullWidth variant="outlined" label="Username" className={classes.input_field}/>
-			<TextField id="register_password" fullWidth variant="outlined" label="Password" className={classes.input_field}/>
-			<TextField id="register_email" fullWidth variant="outlined" label="Email" className={classes.input_field}/>
-			<TextField id="phone" fullWidth variant="outlined" label="Phone" className={classes.input_field}/>
-			<Button variant="contained" color="secondary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}}>
+			<TextField id="register_username" fullWidth variant="outlined" label="NewUsername" className={classes.input_field}
+                       value={newUsername} onChange={e => setNewUsername(e.target.value)}/>
+			<TextField id="register_password" fullWidth variant="outlined" label="NewPassword" className={classes.input_field}
+                       type={"password"} value={newPassword} onChange={e => setNewPassword(e.target.value)}/>
+			<TextField id="register_email" fullWidth variant="outlined" label="Email" className={classes.input_field}
+                       value={email} onChange={e => setEmail(e.target.value)}/>
+			<TextField id="phone" fullWidth variant="outlined" label="Phone" className={classes.input_field}
+                       value={phone} onChange={e => setPhone(e.target.value)}/>
+			<Button variant="contained" color="secondary" style={{height: '50px',width: '70%', margin: '40px 0 10px 0'}} disabled={!validateRegister()}
+                    onClick={() => submitRegister()}>
 			Register
 			</Button>
 			<Typography variant="subtitle1" gutterBottom style={{color: 'blue', cursor: 'pointer'}} onClick={jump}>
@@ -115,4 +192,4 @@ export default function Login_Reg_Button() {
 	  ): null}
     </div>
   );
-}
+};
