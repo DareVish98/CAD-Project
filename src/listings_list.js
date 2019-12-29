@@ -24,7 +24,15 @@ const listings = [
     createData("listingOneeeeeeeeeeeee"),
     createData('listing2'),
     createData('listing3'),
-    createData('listing4')
+    createData('listing4'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3'),
+    createData('listing3')
 ];
 
 export default function ListingList()
@@ -36,7 +44,7 @@ export default function ListingList()
             <Typography variant="h6" gutterBottom>
                 Your listings
             </Typography>
-            <TableContainer>
+            <TableContainer style={{overflowY: 'scroll', height: '700px'}}>
                 <Table>
                     <TableBody>
                         {listings.map(row => (
