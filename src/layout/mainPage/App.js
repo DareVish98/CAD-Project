@@ -4,7 +4,7 @@ import SearchField from '../../components/searchBar/search';
 import Login_Reg_Button from '../../components/login/login_register';
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import New_Listing_Button from "../../components/addListing/AddListing";
+import New_Listing_Button from "../../components/addListing/addListing";
 
 class App extends Component {
 
@@ -41,11 +41,11 @@ class App extends Component {
 		} else {
 			return (
 				<div id="map_search">
-					<SimpleMap/>
+					<SimpleMap mapType={'MAIN'}/>
 					<SearchField/>
 					<New_Listing_Button/>
 					{/* TODO: change link to profile page when done (can find username and password in local storage no need to pass)*/}
-					<Link to={"/"}>
+					<Link to={"/profile"}>
 						<Button variant="contained" color="primary" style={{ position: 'fixed', right: '10%', top: '5%', float: 'right' }}>
 							View Profile
 						</Button>

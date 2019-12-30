@@ -16,7 +16,7 @@ class Listing extends Component {
     render() {
         return (
             <div>
-                <SimpleMap />
+                <SimpleMap mapType={'SECONDARY'}/>
                 <Paper style={{width: '400px', position: 'fixed', top: '2%', left: '2%', backgroundColor:'#404040'}}>
                     <Typography component={"p"} style={{margin: '2%', textAlign: "center", color:'#FFFFFF'}}>
                         Listing {this.props.match.params.id} - 450£/month

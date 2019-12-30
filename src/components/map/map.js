@@ -5,7 +5,7 @@ let pos = {
 	lat:59.95,
 	lng:30.33
 };
-let mainPage = true;
+
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
         pos.lat = position.coords.latitude;
@@ -17,12 +17,17 @@ let locations = [{pos: {lat: 51, lng: -1.35}, tag: "house1"}, {pos: {lat: 50.97,
 let routes = [{lat: 50.96, lng: -1.35}, {lat: 50.97, lng: -1.36}, {lat: 50.965, lng: -1.34}, {lat: 50.95, lng: -1.365}];
 
 class SimpleMap extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     static defaultProps = {
         zoom: 11
     };
 
     renderMap(map, maps) {
-        if (mainPage) {
+        if (this.props.mapType === 'MAIN') {
             for (let i = 0; i < locations.length; i++) {
                 let marker = new maps.Marker({
                     position: locations[i].pos,
@@ -32,21 +37,23 @@ class SimpleMap extends Component {
             }
         }
         else {
-            let directionsService = new maps.DirectionsService();
-            map.origin = routes[0];
-            for (let i = 0; i < routes.length; i++) {
-                let directionsRenderer = new maps.DirectionsRenderer();
-                directionsRenderer.setMap(map);
-                let request = {
-                    origin: routes[0],
-                    destination: routes[i],
-                    travelMode: "WALKING"
-                };
-                directionsService.route(request, (result, status) => {
-                    if (status === 'OK') {
-                        directionsRenderer.setDirections(result);
-                    }
-                });
+            if (this.props.mapType === 'SECONDARY') {
+                let directionsService = new maps.DirectionsService();
+                map.origin = routes[0];
+                for (let i = 0; i < routes.length; i++) {
+                    let directionsRenderer = new maps.DirectionsRenderer();
+                    directionsRenderer.setMap(map);
+                    let request = {
+                        origin: routes[0],
+                        destination: routes[i],
+                        travelMode: "WALKING"
+                    };
+                    directionsService.route(request, (result, status) => {
+                        if (status === 'OK') {
+                            directionsRenderer.setDirections(result);
+                        }
+                    });
+                }
             }
         }
     }
