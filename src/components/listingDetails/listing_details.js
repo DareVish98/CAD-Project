@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+//TODO: load real details from backend
 let utilities = [{entry: 'electric bill', check: true}, {entry: 'water bill', check: false}, {entry: 'gas bill', check: true}, {entry: 'wifi', check: false}];
 const utilities_list = () => {
     return (

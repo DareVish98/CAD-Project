@@ -13,6 +13,9 @@ if (navigator.geolocation) {
 	});
 }
 
+//TODO: create custom markers for 'SECONDARY' map and maybe edit the way the routes look (also figure out zoom and center issue after routes load)
+//TODO: display real locations
+
 let locations = [{pos: {lat: 51, lng: -1.35}, tag: "house1"}, {pos: {lat: 50.97, lng: -1.4}, tag: "house2"}, {pos: {lat: 50.94, lng: -1.33}, tag: "house3"}];
 let routes = [{lat: 50.96, lng: -1.35}, {lat: 50.97, lng: -1.36}, {lat: 50.965, lng: -1.34}, {lat: 50.95, lng: -1.365}];
 

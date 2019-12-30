@@ -24,6 +24,9 @@ function createData(name) {
     return {name};
 }
 
+//TODO: Link actual listings using axios
+//TODO: Create Delete function and update backend with axios
+
 const listings = [
     createData("listingOneeeeeeeeeeeee"),
     createData('listing2'),

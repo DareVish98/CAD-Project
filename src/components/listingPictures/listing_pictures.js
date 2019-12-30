@@ -35,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+//TODO: load real images from backend
 let sample = [{image: 'https://wickes.scene7.com/is/image/travisperkins/GPID_1100100003_02?wid=824&hei=618&fit=crop', tag: 'kitchen'},
     {image: 'https://s3-eu-west-2.amazonaws.com/homebuilding-assets/prodwebsite/content/uploads/2016/05/22100703/contemporary-bathroom-with-exposed-brick-wall.jpg', tag: 'bathroom'},
     {image: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/minimalist-eclectic-living-room-1554401627.jpg', tag: 'living room'}];

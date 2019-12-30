@@ -29,6 +29,10 @@ class App extends Component {
 		this.setState({username: '', password: ''});
 	};
 
+	//TODO: See bellow
+	//TODO: Add Filter
+	//TODO: Load listings from backend and pass them to map and serach bar
+
 	render() {
 		if (this.state.username === '' && this.state.password === '') {
 			return (

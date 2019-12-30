@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+//TODO: create submit function that saves review to backend
 let name = "Grand View House";
 export default function AddReview() {
     const classes = useStyles();

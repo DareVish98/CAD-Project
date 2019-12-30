@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+//TODO: Load real reviews from backend
 //for testing purpose
 let res = {overall_rating: 4.4, reviews: [
         {rating: 2.5, comment: 'Facilities are broken, but location is good. balabalabalabalabala see what happen if x-overflow'},

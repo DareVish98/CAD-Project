@@ -22,6 +22,9 @@ export default class UpdateProfile extends React.Component
         this.handleChange = this.handleChange.bind(this);
     }
 
+    //TODO: finish image upload
+    //TODO: Create axios function for updating backend details
+
     handleChange(event)
     {
         const {name, value} = event.target;

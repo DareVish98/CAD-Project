@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+//TODO: load real amenities from backend
 let amenities = [{content: 'Shop - 800m'},{content: 'Gym - 1km'},{content: 'University - 500m'}];
 const display_list = () => {
     return (

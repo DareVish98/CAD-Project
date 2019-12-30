@@ -43,6 +43,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+//TODO: load existing details from backend and create function to update them
 export default function Edit_Listing_Button() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -123,7 +124,7 @@ export default function Edit_Listing_Button() {
                                     <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}/>
                                     <label htmlFor="imageupload">
                                         <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
-                                            Upload Images
+                                            Change Images
                                         </Button>
                                     </label>
                                 </Grid>
@@ -159,7 +160,7 @@ export default function Edit_Listing_Button() {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
-                                        Add
+                                        Update
                                     </Button>
                                 </Grid>
                                 <Grid item xs={6}>

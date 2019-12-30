@@ -13,6 +13,8 @@ class Listing extends Component {
         super(props);
     }
 
+    //TODO: Maybe add LOG OUT / Main Page button
+
     render() {
         return (
             <div>

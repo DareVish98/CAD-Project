@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+//TODO: display real listings from backend
 //unfinished, for handling response from server
 var words = [{content: 'word1'},{content: 'word2'}]
 const display_list = () => {
