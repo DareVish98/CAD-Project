@@ -4,7 +4,7 @@ import SearchField from '../../components/searchBar/search';
 import Login_Reg_Button from '../../components/login/login_register';
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import New_Listing_Button from "../addListing/AddListing";
+import New_Listing_Button from "../../components/addListing/AddListing";
 
 class App extends Component {
 
