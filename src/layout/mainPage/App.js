@@ -37,7 +37,7 @@ class App extends Component {
 		if (this.state.username === '' && this.state.password === '') {
 			return (
 				<div id="map_search">
-					<SimpleMap/>
+					<SimpleMap mapType={'MAIN'}/>
 					<SearchField/>
 					<Login_Reg_Button onLoginRegister={this.handleLogin}/>
 				</div>
