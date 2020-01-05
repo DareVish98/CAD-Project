@@ -155,7 +155,7 @@ export default function New_Listing_Button() {
                 county: county, postcode: postcode, description: description, price: price, phone: phone,
                 email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,
                 energy: Energy, water: Water, internet: Internet, gas: Gas, image1_tag: tag1, image1_data: data1, image2_tag: tag2,
-                image2_data: data2, image3_tag: tag3, image3_data: data3, lat:50.925593, lng:-1.407550
+                image2_data: data2, image3_tag: tag3, image3_data: data3, lat: lat, lng: lng
             },
             {headers: {'Content-Type': 'application/json'}}
         ).then( (response) => {
