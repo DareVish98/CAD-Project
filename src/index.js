@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import App from './layout/mainPage/App';
+import theme from './theme';
 import {BrowserRouter, Route} from "react-router-dom";
 import Listing from "./layout/listing/Listing";
 import ProfilePage from "./layout/profile/profile";
