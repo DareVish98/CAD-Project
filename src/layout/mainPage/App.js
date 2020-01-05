@@ -5,6 +5,14 @@ import Login_Reg_Button from '../../components/login/login_register';
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 import New_Listing_Button from "../../components/addListing/addListing";
+import axios from "axios";
+
+//TODO: Add Filter
+//TODO: Load listings from backend
+let locations = [{pos: {lat: 50.909, lng: -1.397}, tag: "house1"},
+	{pos: {lat: 50.9105, lng: -1.4}, tag: "house2"},
+	{pos: {lat: 50.91, lng: -1.39}, tag: "house3"},
+	{pos: {lat: 50.905, lng: -1.405}, tag: "house4"}];
 
 class App extends Component {
 
@@ -29,26 +37,21 @@ class App extends Component {
 		this.setState({username: '', password: ''});
 	};
 
-	//TODO: See bellow
-	//TODO: Add Filter
-	//TODO: Load listings from backend and pass them to map and serach bar
-
 	render() {
 		if (this.state.username === '' && this.state.password === '') {
 			return (
 				<div id="map_search">
-					<SimpleMap mapType={'MAIN'}/>
-					<SearchField/>
+					<SimpleMap mapType={'MAIN'} routes={locations}/>
+					<SearchField listings={locations}/>
 					<Login_Reg_Button onLoginRegister={this.handleLogin}/>
 				</div>
 			);
 		} else {
 			return (
 				<div id="map_search">
-					<SimpleMap mapType={'MAIN'}/>
-					<SearchField/>
+					<SimpleMap mapType={'MAIN'} routes={locations}/>
+					<SearchField listings={locations}/>
 					<New_Listing_Button/>
-					{/* TODO: change link to profile page when done (can find username and password in local storage no need to pass)*/}
 					<Link to={"/profile"}>
 						<Button variant="contained" color="primary" style={{ position: 'fixed', right: '10%', top: '5%', float: 'right' }}>
 							View Profile

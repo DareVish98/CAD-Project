@@ -15,6 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
     new_listing_button: {
@@ -46,10 +47,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-//TODO: function to save listing to backend
 export default function New_Listing_Button() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [owner, setOwner] = React.useState('');
+    const [address, setAddress] = React.useState('');
+    const [town, setTown] = React.useState('');
+    const [county, setCounty] = React.useState('');
+    const [postcode, setPostcode] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [price, setPrice] = React.useState('');
+    const [phone, setPhone] = React.useState('');
+    const [agency, setAgency] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [selectedFromDate, handleFromDateChange] = React.useState(new Date());
     const [selectedContractLength, setContractLength] = React.useState("12");
     const contractLengths = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","24+"];
@@ -57,6 +67,7 @@ export default function New_Listing_Button() {
     const roomAmounts = ["1","2","3","4","5","6","7","8","9","10"];
     const [billsState, setBillsState] = React.useState({Energy:false,Water:false,Internet:false,TVLicense:false});
     const {Energy,Water,Internet,TVLicense} = billsState;
+    const [files, setFiles] = React.useState('');
 
     const display_box = () => {
         setOpen(!open);
@@ -77,6 +88,51 @@ export default function New_Listing_Button() {
     const handleBillsBoxChange = name => event => {
         setBillsState({ ...billsState, [name]: event.target.checked });
     };
+
+    const getBaseImages = () => {
+
+        let images = [];
+        for (let i = 0; i < files.length; i++) {
+
+            let reader = new FileReader();
+            reader.readAsDataURL(files[i]);
+
+            reader.onload = () => {
+
+                let imageInfo = {
+                    tag: files[i].name,
+                    data: reader.result
+                };
+
+                images.push(imageInfo);
+                if (images.length === files.length) {
+                    setFiles(images);
+                }
+            };
+        }
+    };
+
+    //TODO: finish function to add new Listing in back end
+    async function submitListing() {
+        await axios.post(
+            'link',
+            {username: localStorage.getItem("username"), owner: owner, address: address, town: town,
+                county: county, postcode: postcode, description: description, price: price, phone: phone,
+                agency: agency, email: email, selectedFromDate: selectedFromDate, selectedBedrooms: selectedBedrooms,
+                selectedContractLength: selectedContractLength, billsState: billsState, images: files},
+            {headers: {'Content-Type': 'application/json'}}
+        ).then( (response) => {
+            if (true) {
+                hide_box();
+            }
+        }).catch( (error) => {
+            if (error.response) {
+                alert(error.response.status + ' request failed: ' + error.response.data);
+            } else {
+                alert('Request failed: ' + error.message);
+            }
+        });
+    }
 
     return (
         <div>
@@ -126,9 +182,11 @@ export default function New_Listing_Button() {
                                     <TextField id="description" fullWidth variant="outlined" label="Description" multiline rows="5" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}/>
+                                    <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}
+                                    onChange={e => setFiles(e.target.files)}/>
                                     <label htmlFor="imageupload">
-                                        <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
+                                        <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
+                                                onClick={getBaseImages}>
                                             Upload Images
                                         </Button>
                                     </label>
@@ -164,7 +222,8 @@ export default function New_Listing_Button() {
                                     <TextField id="email" fullWidth variant="outlined" label="Email" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
+                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
+                                            onClick={() => submitListing()}>
                                         Add
                                     </Button>
                                 </Grid>
