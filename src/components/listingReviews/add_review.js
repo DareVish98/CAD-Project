@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AddReview({review, name}) {
+export default function AddReview({review, name, address}) {
     const classes = useStyles();
 
     const [value, setValue] = React.useState(review.rating);
@@ -27,14 +27,12 @@ export default function AddReview({review, name}) {
     const [comment, setComment] = React.useState(review.comment);
 
     async function submitReview() {
-        //TODO: finish submit function that saves review to backend
         await axios.post(
-            'link',
-            {username: localStorage.getItem('username'), rating: value, description: comment},
+            'http://localhost:8000/api/postreview/',
+            {reviewer: localStorage.getItem('username'), address: address, rating: value, description: comment},
             {headers: {'Content-Type': 'application/json'}}
-        ).then( (response) => {
-            if (true) {
-            }
+        ).then( () => {
+            alert("Your review has been submitted");
         }).catch( (error) => {
             if (error.response) {
                 alert(error.response.status + ' request failed: ' + error.response.data);

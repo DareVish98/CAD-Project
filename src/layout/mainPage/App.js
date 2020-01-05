@@ -8,21 +8,29 @@ import New_Listing_Button from "../../components/addListing/addListing";
 import axios from "axios";
 
 //TODO: Add Filter
-//TODO: Load listings from backend
-let locations = [{pos: {lat: 50.909, lng: -1.397}, tag: "house1"},
-	{pos: {lat: 50.9105, lng: -1.4}, tag: "house2"},
-	{pos: {lat: 50.91, lng: -1.39}, tag: "house3"},
-	{pos: {lat: 50.905, lng: -1.405}, tag: "house4"}];
-
 class App extends Component {
 
 	constructor(props) {
 		super(props);
 		if (localStorage.getItem("username") && localStorage.getItem("password")) {
-			this.state = { username: localStorage.getItem("username"), password: localStorage.getItem("password")};
+			this.state = { username: localStorage.getItem("username"), password: localStorage.getItem("password"), listings: []};
 		} else {
-			this.state = { username: '', password: ''};
+			this.state = { username: '', password: '', listings: []};
 		}
+		this.getListings();
+	}
+
+	async getListings() {
+		await axios.get('http://localhost:8000/api/listings/')
+			.then((response) => {
+				this.setState({listings: response.data});
+			}).catch( (error) => {
+				if (error.response) {
+					alert(error.response.status + ' request failed: ' + error.response.data);
+				} else {
+					alert('Request failed: ' + error.message);
+				}
+			});
 	}
 
 	handleLogin = (username, password) => {
@@ -41,16 +49,16 @@ class App extends Component {
 		if (this.state.username === '' && this.state.password === '') {
 			return (
 				<div id="map_search">
-					<SimpleMap mapType={'MAIN'} routes={locations}/>
-					<SearchField listings={locations}/>
+					<SimpleMap mapType={'MAIN'} routes={this.state.listings}/>
+					<SearchField listings={this.state.listings}/>
 					<Login_Reg_Button onLoginRegister={this.handleLogin}/>
 				</div>
 			);
 		} else {
 			return (
 				<div id="map_search">
-					<SimpleMap mapType={'MAIN'} routes={locations}/>
-					<SearchField listings={locations}/>
+					<SimpleMap mapType={'MAIN'} routes={this.state.listings}/>
+					<SearchField listings={this.state.listings}/>
 					<New_Listing_Button/>
 					<Link to={"/profile"}>
 						<Button variant="contained" color="primary" style={{ position: 'fixed', right: '10%', top: '5%', float: 'right' }}>

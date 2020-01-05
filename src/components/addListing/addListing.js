@@ -66,8 +66,8 @@ export default function New_Listing_Button() {
     const [selectedBedrooms, setBedrooms] = React.useState("1");
     const roomAmounts = ["1","2","3","4","5","6","7","8","9","10"];
     const [billsState, setBillsState] = React.useState({Energy:false,Water:false,Internet:false,TVLicense:false});
-    const {Energy,Water,Internet,TVLicense} = billsState;
-    const [files, setFiles] = React.useState('');
+    const {Energy,Water,Internet,Gas} = billsState;
+    const [files, setFiles] = React.useState(new FileList());
 
     const display_box = () => {
         setOpen(!open);
@@ -92,6 +92,9 @@ export default function New_Listing_Button() {
     const getBaseImages = () => {
 
         let images = [];
+        while (files.length > 3) {
+            files.pop();
+        }
         for (let i = 0; i < files.length; i++) {
 
             let reader = new FileReader();
@@ -112,19 +115,51 @@ export default function New_Listing_Button() {
         }
     };
 
-    //TODO: finish function to add new Listing in back end
     async function submitListing() {
+
+        let tag1,tag2,tag3,data1,data2,data3;
+        if (files.length === 3) {
+            tag1 = files[0].tag;
+            tag2 = files[1].tag;
+            tag3 = files[2].tag;
+            data1 = files[0].data;
+            data2 = files[1].data;
+            data3 = files[2].data;
+        } else if (files.length === 2) {
+            tag1 = files[0].tag;
+            tag2 = files[1].tag;
+            tag3 = 'EMPTY';
+            data1 = files[0].data;
+            data2 = files[1].data;
+            data3 = ' ';
+        } else if (files.length === 1) {
+            tag1 = files[0].tag;
+            tag2 = 'EMPTY';
+            tag3 = 'EMPTY';
+            data1 = files[0].data;
+            data2 = ' ';
+            data3 = ' ';
+        } else {
+            tag1 = 'EMPTY';
+            tag2 = 'EMPTY';
+            tag3 = 'EMPTY';
+            data1 = ' ';
+            data2 = ' ';
+            data3 = ' ';
+        }
+
         await axios.post(
-            'link',
+            'http://localhost:8000/api/listings/',
             {username: localStorage.getItem("username"), owner: owner, address: address, town: town,
                 county: county, postcode: postcode, description: description, price: price, phone: phone,
-                agency: agency, email: email, selectedFromDate: selectedFromDate, selectedBedrooms: selectedBedrooms,
-                selectedContractLength: selectedContractLength, billsState: billsState, images: files},
+                email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,
+                energy: Energy, water: Water, internet: Internet, gas: Gas, image1_tag: tag1, image1_data: data1, image2_tag: tag2,
+                image2_data: data2, image3_tag: tag3, image3_data: data3
+            },
             {headers: {'Content-Type': 'application/json'}}
         ).then( (response) => {
-            if (true) {
-                hide_box();
-            }
+            alert("Listing was added");
+            hide_box();
         }).catch( (error) => {
             if (error.response) {
                 alert(error.response.status + ' request failed: ' + error.response.data);
@@ -209,7 +244,7 @@ export default function New_Listing_Button() {
                                         <FormControlLabel control={<Checkbox checked={Energy} onChange={handleBillsBoxChange('Energy')} value="Energy" />} label="Energy"/>
                                         <FormControlLabel control={<Checkbox checked={Water} onChange={handleBillsBoxChange('Water')} value="Water" />} label="Water"/>
                                         <FormControlLabel control={<Checkbox checked={Internet} onChange={handleBillsBoxChange('Internet')} value="Internet" />} label="Internet"/>
-                                        <FormControlLabel control={<Checkbox checked={TVLicense} onChange={handleBillsBoxChange('TVLicense')} value="TVLicense" />} label="TV License"/>
+                                        <FormControlLabel control={<Checkbox checked={Gas} onChange={handleBillsBoxChange('Gas')} value="Gas" />} label="Gas"/>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
