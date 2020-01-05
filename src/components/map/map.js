@@ -65,8 +65,14 @@ class SimpleMap extends Component {
                     };
                     directionsService.route(request, (result, status) => {
                         if (status === 'OK') {
-                            directionsRenderer.setDirections(result);
-                            amenities.push({tag: this.props.routes[i].tag, distance: result.routes[0].legs[0].distance.value});
+                            //Limiting the radius to 1500 m
+                            if (result.routes[0].legs[0].distance.value < 1500) {
+                                directionsRenderer.setDirections(result);
+                                amenities.push({
+                                    tag: this.props.routes[i].tag,
+                                    distance: result.routes[0].legs[0].distance.value
+                                });
+                            }
                         }
                     });
                 }
