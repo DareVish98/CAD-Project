@@ -13,6 +13,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
     edit_listing_button: {
@@ -43,17 +44,28 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-//TODO: load existing details from backend and create function to update them
-export default function Edit_Listing_Button() {
+export default function Edit_Listing_Button(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [selectedFromDate, handleFromDateChange] = React.useState(new Date());
-    const [selectedContractLength, setContractLength] = React.useState("12");
+    const [owner, setOwner] = React.useState(props.owner);
+    const [address, setAddress] = React.useState(props.address);
+    const [town, setTown] = React.useState(props.town);
+    const [county, setCounty] = React.useState(props.county);
+    const [postcode, setPostcode] = React.useState(props.postcode);
+    const [description, setDescription] = React.useState(props.description);
+    const [price, setPrice] = React.useState(props.price);
+    const [phone, setPhone] = React.useState(props.phone);
+    const [email, setEmail] = React.useState(props.email);
+    const [lat, setLat] = React.useState(props.lat);
+    const [lng, setLng] = React.useState(props.lng);
+    const [selectedFromDate, handleFromDateChange] = React.useState(props.valid_from);
+    const [selectedContractLength, setContractLength] = React.useState(props.contract_length);
     const contractLengths = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","24+"];
-    const [selectedBedrooms, setBedrooms] = React.useState("1");
+    const [selectedBedrooms, setBedrooms] = React.useState(props.bedrooms);
     const roomAmounts = ["1","2","3","4","5","6","7","8","9","10"];
-    const [billsState, setBillsState] = React.useState({Energy:false,Water:false,Internet:false,TVLicense:false});
-    const {Energy,Water,Internet,TVLicense} = billsState;
+    const [billsState, setBillsState] = React.useState({Energy: props.energy,Water:props.water,Internet:props.internet,Gas:props.gas});
+    const {Energy,Water,Internet,Gas} = billsState;
+    const [files, setFiles] = React.useState([]);
 
     const display_box = () => {
         setOpen(!open);
@@ -75,6 +87,86 @@ export default function Edit_Listing_Button() {
         setBillsState({ ...billsState, [name]: event.target.checked });
     };
 
+    const getBaseImages = () => {
+
+        let images = [];
+        while (files.length > 3) {
+            files.pop();
+        }
+        for (let i = 0; i < files.length; i++) {
+
+            let reader = new FileReader();
+            reader.readAsDataURL(files[i]);
+
+            reader.onload = () => {
+
+                let imageInfo = {
+                    tag: files[i].name,
+                    data: reader.result
+                };
+
+                images.push(imageInfo);
+                if (images.length === files.length) {
+                    setFiles(images);
+                }
+            };
+        }
+    };
+
+    async function editListing() {
+
+        let tag1,tag2,tag3,data1,data2,data3;
+        if (files.length === 3) {
+            tag1 = files[0].tag;
+            tag2 = files[1].tag;
+            tag3 = files[2].tag;
+            data1 = files[0].data;
+            data2 = files[1].data;
+            data3 = files[2].data;
+        } else if (files.length === 2) {
+            tag1 = files[0].tag;
+            tag2 = files[1].tag;
+            tag3 = 'EMPTY';
+            data1 = files[0].data;
+            data2 = files[1].data;
+            data3 = ' ';
+        } else if (files.length === 1) {
+            tag1 = files[0].tag;
+            tag2 = 'EMPTY';
+            tag3 = 'EMPTY';
+            data1 = files[0].data;
+            data2 = ' ';
+            data3 = ' ';
+        } else {
+            tag1 = 'EMPTY';
+            tag2 = 'EMPTY';
+            tag3 = 'EMPTY';
+            data1 = ' ';
+            data2 = ' ';
+            data3 = ' ';
+        }
+
+        await axios.put(
+            'http://localhost:8000/api/listings/',
+            {username: localStorage.getItem("username"), owner: owner, address: address, town: town,
+                county: county, postcode: postcode, description: description, price: price, phone: phone,
+                email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,
+                energy: Energy, water: Water, internet: Internet, gas: Gas, image1_tag: tag1, image1_data: data1, image2_tag: tag2,
+                image2_data: data2, image3_tag: tag3, image3_data: data3, lat: lat, lng: lng
+            },
+            {headers: {'Content-Type': 'application/json'}}
+        ).then( (response) => {
+            alert("Listing was added");
+            hide_box();
+        }).catch( (error) => {
+            if (error.response) {
+                alert(error.response.status + ' request failed: ' + error.response.data);
+            } else {
+                alert('Request failed: ' + error.message);
+            }
+        });
+    }
+
     return (
         <div>
             <Button variant="contained" color="primary" className={classes.edit_listing_button} onClick={display_box}>
@@ -92,7 +184,9 @@ export default function Edit_Listing_Button() {
                                 <Grid item xs={6}>
                                     <TextField id="owner_name" fullWidth variant="outlined" label="Owner Name" className={classes.input_field}/>
                                 </Grid>
-                                <Grid item xs={6}/>
+                                <Grid item xs={6}>
+                                    <TextField id="email" fullWidth variant="outlined" value={email} onChange={e => setEmail(e.target.value)} label="Email" className={classes.input_field}/>
+                                </Grid>
                                 <Grid item xs={6}>
                                     <TextField id="address_line_one" fullWidth variant="outlined" label="Address Line One" className={classes.input_field}/>
                                 </Grid>
@@ -121,12 +215,20 @@ export default function Edit_Listing_Button() {
                                     <TextField id="description" fullWidth variant="outlined" label="Description" multiline rows="5" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}/>
-                                    <label htmlFor="imageupload">
-                                        <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
-                                            Change Images
-                                        </Button>
-                                    </label>
+                                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <div style={{position: 'absolute', left: '5%', marginTop: 20}}>
+                                            <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}
+                                                   onChange={e => setFiles(e.target.files)}/>
+                                        </div>
+                                        <div style={{marginLeft: 80, marginTop: -10}}>
+                                            <label htmlFor="imageupload">
+                                                <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
+                                                        onClick={getBaseImages}>
+                                                    Change Images
+                                                </Button>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </Grid>
                             </Grid>
                             <Grid container justify="space-evenly" alignItems="flex-start" spacing={2} xs={4}>
@@ -146,26 +248,20 @@ export default function Edit_Listing_Button() {
                                         <FormControlLabel control={<Checkbox checked={Energy} onChange={handleBillsBoxChange('Energy')} value="Energy" />} label="Energy"/>
                                         <FormControlLabel control={<Checkbox checked={Water} onChange={handleBillsBoxChange('Water')} value="Water" />} label="Water"/>
                                         <FormControlLabel control={<Checkbox checked={Internet} onChange={handleBillsBoxChange('Internet')} value="Internet" />} label="Internet"/>
-                                        <FormControlLabel control={<Checkbox checked={TVLicense} onChange={handleBillsBoxChange('TVLicense')} value="TVLicense" />} label="TV License"/>
+                                        <FormControlLabel control={<Checkbox checked={Gas} onChange={handleBillsBoxChange('TVLicense')} value="TVLicense" />} label="TV License"/>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField id="agency" fullWidth variant="outlined" label="Agency Name" className={classes.input_field}/>
+                                    <TextField id="lat" fullWidth variant="outlined" value={lat} onChange={e => setPhone(e.target.value)} label="Latitude" className={classes.input_field}/>
+                                    <TextField id="lng" fullWidth variant="outlined" value={lng} onChange={e => setPhone(e.target.value)} label="Longitude" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField id="phone" fullWidth variant="outlined" label="Phone" className={classes.input_field}/>
                                 </Grid>
-                                <Grid item xs={12}>
-                                    <TextField id="email" fullWidth variant="outlined" label="Email" className={classes.input_field}/>
-                                </Grid>
                                 <Grid item xs={6}>
-                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}>
+                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '20px 0 10px 0'}}
+                                            onClick={() => editListing()}>
                                         Update
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}} onClick={hide_box}>
-                                        Cancel
                                     </Button>
                                 </Grid>
                             </Grid>

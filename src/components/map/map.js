@@ -23,10 +23,14 @@ class SimpleMap extends Component {
     renderMap(map, maps) {
         if (this.props.mapType === 'MAIN') {
             for (let i = 0; i < this.props.routes.length; i++) {
+                let title = this.props.routes[i].address + ' ' + this.props.routes[i].postcode;
                 let marker = new maps.Marker({
-                    position: this.props.routes[i].pos,
+                    position: {
+                        lat: this.props.routes[i].lat,
+                        lng: this.props.routes[i].lng,
+                    },
                     map: map,
-                    title: this.props.routes[i].tag,
+                    title: title,
                     icon: {
                         url: houseLogo,
                         scaledSize: {

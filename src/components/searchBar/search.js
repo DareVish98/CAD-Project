@@ -24,9 +24,10 @@ const useStyles = makeStyles(theme => ({
 const display_list = (listings) => {
 	return (
 		listings.map( listing => {
+			let label = listing.address + ', ' + listing.postcode;
 			return (
-				<ListItem button component={Link} to={'/listing=' + listing.tag}>
-				<ListItemText primary={listing.tag}/>
+				<ListItem button component={Link} to={'/listing=' + listing.address}>
+				<ListItemText primary={label}/>
 				</ListItem>
 			);
 		})
@@ -43,7 +44,7 @@ export default function SearchField({listings}) {
 	  let result = [];
 	  if (search !== '') {
 		  for (let i = 0; i < listings.length; i++) {
-			  if (listings[i].tag.includes(search))
+			  if (listings[i].postcode.includes(search) || listings[i].address.includes(search))
 				  result.push(listings[i]);
 		  }
 		  setValues(result);

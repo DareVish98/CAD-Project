@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import CloseIcon from '@material-ui/icons/Close';
 import Review from './review';
 import AddReview from './add_review'
+import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
     reviews_button: {
@@ -39,21 +40,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-//TODO: Load real listing reviews from back end
-let reviews = [
-    {reviewer: 'user1', rating: 2.5, comment: 'Facilities are broken, but location is good. balabalabalabalabala see what happen if x-overflow'},
-    {reviewer: 'user2', rating: 4, comment: 'Great place with nice view!'},
-    {reviewer: 'user3', rating: 3, comment: 'see what happen if y overflow'},
-    {reviewer: 'user4', rating: 3, comment: 'see what happen if y overflow'},
-    {reviewer: 'user5', rating: 3, comment: 'see what happen if y overflow'},
-    {reviewer: 'user6', rating: 3, comment: 'see what happen if y overflow'},
-    {reviewer: 'user7', rating: 3, comment: 'see what happen if y overflow'},
-];
-
-export default function RatingBox({name}) {
+export default function RatingBox({name, address}) {
     const classes = useStyles();
     const [isExpand, setIsExpand] = React.useState(false);
     const [isView, setIsView] = React.useState(true);
+    const [reviews, setReviews] = React.useState({});
     let margin_x;
 
     const view = {
@@ -81,6 +72,19 @@ export default function RatingBox({name}) {
         return localStorage.getItem("username") === '' && localStorage.getItem("password") === '';
     };
 
+    async function getListings() {
+        await axios.get('http://localhost:8000/reviews/' + address + '/')
+            .then((response) => {
+                setReviews(response.data);
+            }).catch( (error) => {
+                if (error.response) {
+                    alert(error.response.status + ' request failed: ' + error.response.data);
+                } else {
+                    alert('Request failed: ' + error.message);
+                }
+            });
+    }
+
     let check = true;
     for (let i = 0; i < reviews.length; i++) {
         if (reviews[i].reviewer === localStorage.getItem("username")) {
@@ -100,7 +104,7 @@ export default function RatingBox({name}) {
                                         Review</Button>
                                 </div>
                                 <div style={{float: 'left'}}>
-                                    <AddReview review={edit} name={name}/>
+                                    <AddReview review={edit} name={name} address={address}/>
                                     <Button color="primary" style={{margin: '18px 0 30px 140px'}}
                                             onClick={jump}>Back</Button>
                                 </div>
@@ -126,7 +130,7 @@ export default function RatingBox({name}) {
                                 <Button color="primary" disabled={logged()} style={{margin: '18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
                             </div>
                             <div style={{float: 'left'}}>
-                                <AddReview review={{reviewer: '', rating: 5, comment: ''}} name={name}/>
+                                <AddReview review={{reviewer: '', rating: 5, comment: ''}} name={name} address={address}/>
                                 <Button color="primary" style={{margin: '18px 0 30px 140px'}}
                                         onClick={jump}>Back</Button>
                             </div>

@@ -99,31 +99,27 @@ export default function Login_Reg_Button({onLoginRegister}) {
   }
 
   async function submitLogin() {
-      //TODO: check username + password with back end (axios call)
       await axios.post(
-          'link',
+          'http://localhost:8000/api/user/auth/',
           {username: username, password: password},
           {headers: {'Content-Type': 'application/json'}}
       ).then( (response) => {
-          if (true) {
+          if (response.username === username) {
               onLoginRegister(username, password);
               hide_box();
           }
       }).catch( (error) => {
-          // if (error.response) {
-          //     alert(error.response.status + ' request failed: ' + error.response.data);
-          // } else {
-          //     alert('Request failed: ' + error.message);
-          // }
-          onLoginRegister(username, password);
-          hide_box();
+          if (error.response) {
+              alert(error.response.status + ' request failed: ' + error.response.data);
+          } else {
+              alert('Request failed: ' + error.message);
+          }
       });
   }
 
   async function submitRegister() {
-      //TODO: check newUsername (needs to be unique) + newPassword + email + phone (save) to back end (axios call)
       await axios.post(
-          'link',
+          'http://localhost:8000/api/user/create/',
           {username: newUsername, password: newPassword, email: email, phone: phone},
           {headers: {'Content-Type': 'application/json'}}
       ).then( (response) => {
@@ -132,13 +128,11 @@ export default function Login_Reg_Button({onLoginRegister}) {
               hide_box();
           }
       }).catch( (error) => {
-          // if (error.response) {
-          //     alert(error.response.status + ' request failed: ' + error.response.data);
-          // } else {
-          //     alert('Request failed: ' + error.message);
-          // }
-          onLoginRegister(newUsername, newPassword);
-          hide_box();
+          if (error.response) {
+              alert(error.response.status + ' request failed: ' + error.response.data);
+          } else {
+              alert('Request failed: ' + error.message);
+          }
       });
   }
 

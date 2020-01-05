@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
-import theme from './theme';
 import App from './layout/mainPage/App';
 import {BrowserRouter, Route} from "react-router-dom";
 import Listing from "./layout/listing/Listing";

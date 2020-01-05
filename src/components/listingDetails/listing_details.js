@@ -45,29 +45,17 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-//TODO: Load real listing details from back end
-let details = {
-    owner: 'John S. Park',
-    price: '450£/month',
-    contract: '12 months',
-    description:  'This is a new 4 bedroom house. Fully furnished kitchen.' +
-        'Brand new bathrooms. Large living room. ' +
-        'Plenty parking space and bike shed outside.',
-    phone: '02343549298428',
-    email: 'company@email.co.uk',
-    installments: [{entry: 'every month', check: true},
-        {entry: 'every three months', check: false},
-        {entry: 'every six months', check: false},
-        {entry: 'one time payment', check: false}],
-    utilities: [{entry: 'electric bill', check: true},
-        {entry: 'water bill', check: false},
-        {entry: 'gas bill', check: true},
-        {entry: 'wifi', check: false}]
-};
+const utilities_list = (details) => {
 
-const utilities_list = () => {
+    let utilities = [
+        {entry: 'electric bill', check: details.energy},
+        {entry: 'water bill', check: details.water},
+        {entry: 'gas bill', check: details.gas},
+        {entry: 'wifi', check: details.internet}
+    ];
+
     return (
-        details.utilities.map( utility => {
+        utilities.map( utility => {
             return (
                 <FormControlLabel
                     control={
@@ -84,26 +72,7 @@ const utilities_list = () => {
     );
 };
 
-const installments_list = () => {
-    return (
-        details.installments.map( installment => {
-            return (
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked = {installment.check}
-                            value = {installment.check}
-                            disabled = {true}
-                        />
-                    }
-                    label={installment.entry}
-                />
-            );
-        })
-    );
-};
-
-export default function Listing_Details() {
+export default function Listing_Details({details}) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -129,17 +98,18 @@ export default function Listing_Details() {
                     <div className={classes.listing_details_inner_container}>
                         <Typography className={classes.field}>Owner: {details.owner}</Typography>
                         <Typography className={classes.field}>Price: {details.price}</Typography>
-                        <Typography className={classes.field}>Contract Length: {details.contract}</Typography>
+                        <Typography className={classes.field}>Contract Length: {details.contract_length}</Typography>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <Typography className={classes.field}>Included Facilities:</Typography>
                             <Typography className={classes.field}>Installments:</Typography>
                         </div>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '2%'}}>
-                                {utilities_list()}
+                                {utilities_list(details)}
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '2%'}}>
-                                {installments_list()}
+                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                                <Typography className={classes.field}>Start Date: {details.valid_from}</Typography>
+                                <Typography className={classes.field}>Bedrooms: {details.bedrooms}</Typography>
                             </div>
                         </div>
                         <Typography className={classes.field}>Description:</Typography>
