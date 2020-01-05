@@ -58,8 +58,9 @@ export default function New_Listing_Button() {
     const [description, setDescription] = React.useState('');
     const [price, setPrice] = React.useState('');
     const [phone, setPhone] = React.useState('');
-    const [agency, setAgency] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [lat, setLat] = React.useState('');
+    const [lng, setLng] = React.useState('');
     const [selectedFromDate, handleFromDateChange] = React.useState(new Date());
     const [selectedContractLength, setContractLength] = React.useState("12");
     const contractLengths = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","24+"];
@@ -67,7 +68,7 @@ export default function New_Listing_Button() {
     const roomAmounts = ["1","2","3","4","5","6","7","8","9","10"];
     const [billsState, setBillsState] = React.useState({Energy:false,Water:false,Internet:false,TVLicense:false});
     const {Energy,Water,Internet,Gas} = billsState;
-    const [files, setFiles] = React.useState(new FileList());
+    const [files, setFiles] = React.useState([]);
 
     const display_box = () => {
         setOpen(!open);
@@ -154,7 +155,7 @@ export default function New_Listing_Button() {
                 county: county, postcode: postcode, description: description, price: price, phone: phone,
                 email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,
                 energy: Energy, water: Water, internet: Internet, gas: Gas, image1_tag: tag1, image1_data: data1, image2_tag: tag2,
-                image2_data: data2, image3_tag: tag3, image3_data: data3
+                image2_data: data2, image3_tag: tag3, image3_data: data3, lat:50.925593, lng:-1.407550
             },
             {headers: {'Content-Type': 'application/json'}}
         ).then( (response) => {
@@ -186,20 +187,22 @@ export default function New_Listing_Button() {
                         <Grid container direction="row" justify="space-evenly" alignItems="flex-start" spacing={2}>
                             <Grid container justify="space-evenly" alignItems="flex-start" spacing={2} xs={8}>
                                 <Grid item xs={6}>
-                                    <TextField id="owner_name" fullWidth variant="outlined" label="Owner Name" className={classes.input_field}/>
-                                </Grid>
-                                <Grid item xs={6}/>
-                                <Grid item xs={6}>
-                                    <TextField id="address_line_one" fullWidth variant="outlined" label="Address Line One" className={classes.input_field}/>
+                                    <TextField id="owner_name" fullWidth variant="outlined" value={owner} onChange={e => setOwner(e.target.value)} label="Owner Name" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField id="address_town" fullWidth variant="outlined" label="Town/City" className={classes.input_field}/>
+                                    <TextField id="email" fullWidth variant="outlined" value={email} onChange={e => setEmail(e.target.value)} label="Email" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField id="address_county" fullWidth variant="outlined" label="County" className={classes.input_field}/>
+                                    <TextField id="address_line_one" fullWidth variant="outlined" value={address} onChange={e => setAddress(e.target.value)} label="Address Line One" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField id="address_postcode" fullWidth variant="outlined" label="Postcode" className={classes.input_field}/>
+                                    <TextField id="address_town" fullWidth variant="outlined" value={town} onChange={e => setTown(e.target.value)} label="Town/City" className={classes.input_field}/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField id="address_county" fullWidth variant="outlined" value={county} onChange={e => setCounty(e.target.value)} label="County" className={classes.input_field}/>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField id="address_postcode" fullWidth variant="outlined" value={postcode} onChange={e => setPostcode(e.target.value)} label="Postcode" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtil}>
@@ -214,22 +217,28 @@ export default function New_Listing_Button() {
                                     </TextField>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField id="description" fullWidth variant="outlined" label="Description" multiline rows="5" className={classes.input_field}/>
+                                    <TextField id="description" fullWidth variant="outlined" label="Description" value={description} onChange={e => setDescription(e.target.value)} multiline rows="5" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}
-                                    onChange={e => setFiles(e.target.files)}/>
-                                    <label htmlFor="imageupload">
-                                        <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
-                                                onClick={getBaseImages}>
-                                            Upload Images
-                                        </Button>
-                                    </label>
+                                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <div style={{position: 'absolute', left: '5%', marginTop: 20}}>
+                                            <input id="imageupload" accept="image/*" multiple type="file" className={classes.input_field}
+                                                   onChange={e => setFiles(e.target.files)}/>
+                                        </div>
+                                        <div style={{marginLeft: 80, marginTop: -10}}>
+                                            <label htmlFor="imageupload">
+                                                <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
+                                                        onClick={getBaseImages}>
+                                                    Upload Images
+                                                </Button>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </Grid>
                             </Grid>
                             <Grid container justify="space-evenly" alignItems="flex-start" spacing={2} xs={4}>
                                 <Grid item xs={12}>
-                                    <TextField id="price" fullWidth variant="outlined" label="Price PCM (£)" className={classes.input_field}/>
+                                    <TextField id="price" fullWidth variant="outlined" value={price} onChange={e => setPrice(e.target.value)} label="Price PCM (£)" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField id="bedrooms" select fullWidth variant="outlined" label="Bedrooms" className={classes.input_field} value={selectedBedrooms} onChange={rooms => handleRoomsChange(rooms)}>
@@ -248,23 +257,16 @@ export default function New_Listing_Button() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField id="agency" fullWidth variant="outlined" label="Agency Name" className={classes.input_field}/>
+                                    <TextField id="lat" fullWidth variant="outlined" value={lat} onChange={e => setPhone(e.target.value)} label="Latitude" className={classes.input_field}/>
+                                    <TextField id="lng" fullWidth variant="outlined" value={lng} onChange={e => setPhone(e.target.value)} label="Longitude" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField id="phone" fullWidth variant="outlined" label="Phone" className={classes.input_field}/>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField id="email" fullWidth variant="outlined" label="Email" className={classes.input_field}/>
+                                    <TextField id="phone" fullWidth variant="outlined" value={phone} onChange={e => setPhone(e.target.value)} label="Phone" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}}
+                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '20px 0 10px 0'}}
                                             onClick={() => submitListing()}>
                                         Add
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Button variant="contained" color="primary" style={{height: '50px',width: '100%', margin: '40px 0 10px 0'}} onClick={hide_box}>
-                                        Cancel
                                     </Button>
                                 </Grid>
                             </Grid>
