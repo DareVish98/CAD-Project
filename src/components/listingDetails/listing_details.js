@@ -10,7 +10,7 @@ import {Checkbox, FormControlLabel} from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     listing_details_button: {
         position: 'fixed',
-        right: '19.5%',
+        right: '50%',
         top: '2%',
         float: 'right',
         backgroundColor: '#404040',
@@ -45,11 +45,29 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-//TODO: load real details from backend
-let utilities = [{entry: 'electric bill', check: true}, {entry: 'water bill', check: false}, {entry: 'gas bill', check: true}, {entry: 'wifi', check: false}];
+//TODO: Load real listing details from back end
+let details = {
+    owner: 'John S. Park',
+    price: '450£/month',
+    contract: '12 months',
+    description:  'This is a new 4 bedroom house. Fully furnished kitchen.' +
+        'Brand new bathrooms. Large living room. ' +
+        'Plenty parking space and bike shed outside.',
+    phone: '02343549298428',
+    email: 'company@email.co.uk',
+    installments: [{entry: 'every month', check: true},
+        {entry: 'every three months', check: false},
+        {entry: 'every six months', check: false},
+        {entry: 'one time payment', check: false}],
+    utilities: [{entry: 'electric bill', check: true},
+        {entry: 'water bill', check: false},
+        {entry: 'gas bill', check: true},
+        {entry: 'wifi', check: false}]
+};
+
 const utilities_list = () => {
     return (
-        utilities.map( utility => {
+        details.utilities.map( utility => {
             return (
                 <FormControlLabel
                     control={
@@ -66,10 +84,9 @@ const utilities_list = () => {
     );
 };
 
-let installments = [{entry: 'every month', check: true}, {entry: 'every three months', check: false}, {entry: 'every six months', check: false}, {entry: 'one time payment', check: false}];
 const installments_list = () => {
     return (
-        installments.map( installment => {
+        details.installments.map( installment => {
             return (
                 <FormControlLabel
                     control={
@@ -110,9 +127,9 @@ export default function Listing_Details() {
                         <CloseIcon style={{ fontSize: 40, cursor: 'pointer', paddingLeft: '67.5%',color: 'grey'}} onClick={hide_box}/>
                     </div>
                     <div className={classes.listing_details_inner_container}>
-                        <Typography className={classes.field}>Owner: John S. Park</Typography>
-                        <Typography className={classes.field}>Price: 450£/month</Typography>
-                        <Typography className={classes.field}>Contract Length: 12 months</Typography>
+                        <Typography className={classes.field}>Owner: {details.owner}</Typography>
+                        <Typography className={classes.field}>Price: {details.price}</Typography>
+                        <Typography className={classes.field}>Contract Length: {details.contract}</Typography>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <Typography className={classes.field}>Included Facilities:</Typography>
                             <Typography className={classes.field}>Installments:</Typography>
@@ -128,19 +145,15 @@ export default function Listing_Details() {
                         <Typography className={classes.field}>Description:</Typography>
                         <div style={{paddingLeft: '2%'}}>
                             <TextField multiline={true} rowsMin={8} rowsMax={8} className={classes.textArea} disabled={true}
-                                defaultValue={
-                                    'This is a new 4 bedroom house. Fully furnished kitchen.' +
-                                    'Brand new bathrooms. Large living room. ' +
-                                    'Plenty parking space and bike shed outside.'
-                                }
+                                defaultValue={details.description}
                             />
                         </div>
                         <div style={{ position: 'absolute', top: '93%', left: '5%', display: 'flex', flexDirection: 'row'}}>
                             <div style={{width: 230}}>
-                                <Typography className={classes.field}>Phone: 02343549298428</Typography>
+                                <Typography className={classes.field}>Phone: {details.phone}</Typography>
                             </div>
                             <div style={{width: 280}}>
-                                <Typography className={classes.field}>Email: company@email.co.uk</Typography>
+                                <Typography className={classes.field}>Email: {details.email}</Typography>
                             </div>
                         </div>
                     </div>

@@ -9,7 +9,7 @@ import AddReview from './add_review'
 const useStyles = makeStyles(theme => ({
     reviews_button: {
         position: 'fixed',
-        right: '12%',
+        right: '42%',
         top: '2%',
         float: 'right',
         backgroundColor: '#404040',
@@ -39,7 +39,18 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function RatingBox() {
+//TODO: Load real listing reviews from back end
+let reviews = [
+    {reviewer: 'user1', rating: 2.5, comment: 'Facilities are broken, but location is good. balabalabalabalabala see what happen if x-overflow'},
+    {reviewer: 'user2', rating: 4, comment: 'Great place with nice view!'},
+    {reviewer: 'user3', rating: 3, comment: 'see what happen if y overflow'},
+    {reviewer: 'user4', rating: 3, comment: 'see what happen if y overflow'},
+    {reviewer: 'user5', rating: 3, comment: 'see what happen if y overflow'},
+    {reviewer: 'user6', rating: 3, comment: 'see what happen if y overflow'},
+    {reviewer: 'user7', rating: 3, comment: 'see what happen if y overflow'},
+];
+
+export default function RatingBox({name}) {
     const classes = useStyles();
     const [isExpand, setIsExpand] = React.useState(false);
     const [isView, setIsView] = React.useState(true);
@@ -70,26 +81,60 @@ export default function RatingBox() {
         return localStorage.getItem("username") === '' && localStorage.getItem("password") === '';
     };
 
-    return(
-        <div>
-            <Button variant="contained" color="primary" className={classes.reviews_button} onClick={expand_collapse_box}>Reviews</Button>
-            {isExpand? (
-                <Paper className={classes.review_container}>
-                    <CloseIcon className={classes.close_button}  onClick={expand_collapse_box}/>
-                    <div style={margin_x} className={classes.inner_container}>
-                        <div style={{float: 'left'}}>
-                            <Review />
-                            <Button color="primary" disabled={logged()} style={{margin:'18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
-                        </div>
-                        <div style={{float: 'left'}}>
-                            <AddReview />
-                            <Button color="primary" style={{margin:'18px 0 30px 140px'}} onClick={jump}>Back</Button>
-                        </div>
+    let check = true;
+    for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i].reviewer === localStorage.getItem("username")) {
+            let edit = reviews[i];
+            check = false;
+            return (
+                <div>
+                    <Button variant="contained" color="primary" className={classes.reviews_button}
+                            onClick={expand_collapse_box}>Reviews</Button>
+                    {isExpand ? (
+                        <Paper className={classes.review_container}>
+                            <CloseIcon className={classes.close_button} onClick={expand_collapse_box}/>
+                            <div style={margin_x} className={classes.inner_container}>
+                                <div style={{float: 'left'}}>
+                                    <Review res={reviews}/>
+                                    <Button color="primary" style={{margin: '18px 0 30px 450px'}} onClick={jump}>Edit
+                                        Review</Button>
+                                </div>
+                                <div style={{float: 'left'}}>
+                                    <AddReview review={edit} name={name}/>
+                                    <Button color="primary" style={{margin: '18px 0 30px 140px'}}
+                                            onClick={jump}>Back</Button>
+                                </div>
 
-                    </div>
-                </Paper>
-            ): null}
-        </div>
-    );
+                            </div>
+                        </Paper>
+                    ) : null}
+                </div>
+            );
+        }
+    }
+    if (check) {
+        return (
+            <div>
+                <Button variant="contained" color="primary" className={classes.reviews_button}
+                        onClick={expand_collapse_box}>Reviews</Button>
+                {isExpand ? (
+                    <Paper className={classes.review_container}>
+                        <CloseIcon className={classes.close_button} onClick={expand_collapse_box}/>
+                        <div style={margin_x} className={classes.inner_container}>
+                            <div style={{float: 'left'}}>
+                                <Review res={reviews}/>
+                                <Button color="primary" disabled={logged()} style={{margin: '18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
+                            </div>
+                            <div style={{float: 'left'}}>
+                                <AddReview review={{reviewer: '', rating: 5, comment: ''}} name={name}/>
+                                <Button color="primary" style={{margin: '18px 0 30px 140px'}}
+                                        onClick={jump}>Back</Button>
+                            </div>
 
+                        </div>
+                    </Paper>
+                ) : null}
+            </div>
+        );
+    }
 }

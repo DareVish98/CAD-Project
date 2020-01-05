@@ -6,7 +6,10 @@ import AmenitiesList from "../../components/amenitiesList/amenities";
 import Listing_Details from "../../components/listingDetails/listing_details";
 import RatingBox from "../../components/listingReviews/Rating";
 import Listing_Pictures from "../../components/listingPictures/listing_pictures";
+import {Link} from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
+//TODO: Load real locations from back end
 let locations = [{pos: {lat: 50.909, lng: -1.397}, tag: "house1"},
     {pos: {lat: 50.9105, lng: -1.4}, tag: "house2"},
     {pos: {lat: 50.91, lng: -1.39}, tag: "house3"},
@@ -18,8 +21,6 @@ class Listing extends Component {
         super(props);
         this.state = { amenities: [] };
     }
-
-    //TODO: Maybe add LOG OUT / Main Page button
 
     handleAmenities = (amenities) => {
         this.setState({ amenities: amenities });
@@ -37,12 +38,18 @@ class Listing extends Component {
                 </Paper>
                 <AmenitiesList amenities={this.state.amenities}/>
                 <Listing_Details/>
-                <RatingBox/>
+                <RatingBox name={locations[0].tag}/>
                 <Listing_Pictures/>
+                <Paper>
+                    <Link to={"/"}>
+                        <Button variant="contained" color="primary" style={{position: 'fixed', top: '2%', right: '3%'}}>
+                            Main Page
+                        </Button>
+                    </Link>
+                </Paper>
             </div>
         );
     }
 }
-
 
 export default Listing

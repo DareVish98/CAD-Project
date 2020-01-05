@@ -20,19 +20,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-//TODO: Load real reviews from backend
-//for testing purpose
-let res = {overall_rating: 4.4, reviews: [
-        {rating: 2.5, comment: 'Facilities are broken, but location is good. balabalabalabalabala see what happen if x-overflow'},
-        {rating: 4, comment: 'Great place with nice view!'},
-        {rating: 3, comment: 'see what happen if y overflow'},
-        {rating: 3, comment: 'see what happen if y overflow'},
-        {rating: 3, comment: 'see what happen if y overflow'},
-        {rating: 3, comment: 'see what happen if y overflow'},
-        {rating: 3, comment: 'see what happen if y overflow'},
-    ]};
-
-export default function Review() {
+export default function Review({res}) {
     const classes = useStyles();
     const [isAdd, setIsOpen] = React.useState(false);
 
@@ -40,14 +28,22 @@ export default function Review() {
         setIsOpen(false);
     };
 
+    let overall_rating = () => {
+        let overall_rating = 0;
+        for (let i = 0; i < res.length; i++) {
+            overall_rating = overall_rating + res[i].rating;
+        }
+        return (parseFloat(overall_rating/res.length).toFixed(1));
+    };
+
     const display_comment = () => {
         return (
-            res.reviews.map( (item, index) => {
+            res.map( (item, index) => {
                 return (
                     <div>
                         <Grid>
                             <Typography variant="subtitle1" style={{display:'block'}}>
-                                Review {index + 1}: {item.rating}/5 stars
+                                {item.reviewer}: {item.rating}/5 stars
                             </Typography>
                             <Typography variant="body2" style={{display:'block',padding:'10px 0 20px 20px'}}>
                                 {item.comment}
@@ -69,14 +65,14 @@ export default function Review() {
                     </Typography>
                     <div style={{display:'block', margin:'10px 0 10px 0'}}>
                         <Rating name="overall"
-                                value={res.overall_rating}
+                                value={overall_rating()}
                                 precision={0.1}
                                 emptyIcon={<StarBorderIcon fontSize="inherit" />}
                                 size="large"
                                 readOnly />
                     </div>
                     <Typography variant="h6">
-                        {res.overall_rating}/5.0
+                        {overall_rating()}/5.0
                     </Typography>
 
                     <List className={classes.comment_container}>
