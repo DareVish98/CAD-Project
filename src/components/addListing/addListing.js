@@ -257,8 +257,8 @@ export default function New_Listing_Button() {
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField id="lat" fullWidth variant="outlined" value={lat} onChange={e => setPhone(e.target.value)} label="Latitude" className={classes.input_field}/>
-                                    <TextField id="lng" fullWidth variant="outlined" value={lng} onChange={e => setPhone(e.target.value)} label="Longitude" className={classes.input_field}/>
+                                    <TextField id="lat" fullWidth variant="outlined" value={lat} onChange={e => setLat(e.target.value)} label="Latitude" className={classes.input_field}/>
+                                    <TextField id="lng" fullWidth variant="outlined" value={lng} onChange={e => setLng(e.target.value)} label="Longitude" className={classes.input_field}/>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField id="phone" fullWidth variant="outlined" value={phone} onChange={e => setPhone(e.target.value)} label="Phone" className={classes.input_field}/>
