@@ -35,16 +35,15 @@ class App extends Component {
 		this.setState({username: '', password: ''});
 	};
 
-	//TODO: See bellow
 	//TODO: Add Filter
-	//TODO: Load listings from backend and pass them to map and serach bar
+	//TODO: Load listings from backend
 
 	render() {
 		if (this.state.username === '' && this.state.password === '') {
 			return (
 				<div id="map_search">
 					<SimpleMap mapType={'MAIN'} routes={locations}/>
-					<SearchField/>
+					<SearchField listings={locations}/>
 					<Login_Reg_Button onLoginRegister={this.handleLogin}/>
 				</div>
 			);
@@ -52,9 +51,8 @@ class App extends Component {
 			return (
 				<div id="map_search">
 					<SimpleMap mapType={'MAIN'} routes={locations}/>
-					<SearchField/>
+					<SearchField listings={locations}/>
 					<New_Listing_Button/>
-					{/* TODO: change link to profile page when done (can find username and password in local storage no need to pass)*/}
 					<Link to={"/profile"}>
 						<Button variant="contained" color="primary" style={{ position: 'fixed', right: '10%', top: '5%', float: 'right' }}>
 							View Profile

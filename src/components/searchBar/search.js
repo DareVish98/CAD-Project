@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -21,38 +21,43 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-//TODO: display real listings from backend
-//unfinished, for handling response from server
-var words = [{content: 'word1'},{content: 'word2'}]
-const display_list = () => {
+const display_list = (listings) => {
 	return (
-		words.map( word => {
+		listings.map( listing => {
 			return (
-				<ListItem button component={Link} to={'/listing=' + word.content}>
-				<ListItemText primary={word.content}/>
+				<ListItem button component={Link} to={'/listing=' + listing.tag}>
+				<ListItemText primary={listing.tag}/>
 				</ListItem>
 			);
 		})
 	);
 };
 
-function handleSubmit() {
-	
-}
-
-export default function SearchField() {
+export default function SearchField({listings}) {
   const classes = useStyles();
+  const [values, setValues] = useState(listings);
+  const [search, setSearch] = useState('');
   
   function handleSubmit(e) {
 	  e.preventDefault();
+	  let result = [];
+	  if (search !== '') {
+		  for (let i = 0; i < listings.length; i++) {
+			  if (listings[i].tag.includes(search))
+				  result.push(listings[i]);
+		  }
+		  setValues(result);
+	  }
   }
+
   return (
 	<Paper className={classes.search_container}>
     <form onSubmit={handleSubmit}>
-      <TextField id="search_input" label="Postcode Or Address" variant="outlined" className={classes.search_form}/>
+      <TextField id="search_input" label="Postcode Or Address" variant="outlined" className={classes.search_form}
+				 value={search} onChange={e => setSearch(e.target.value)}/>
     </form>
 	<List className="list_item">
-	{display_list()}
+	{display_list(values)}
 	</List>
 	</Paper>
   );

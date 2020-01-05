@@ -9,9 +9,6 @@ let pos = {
 	lng:-1.407550
 };
 
-//TODO: create custom markers for 'SECONDARY' map and maybe edit the way the routes look (also figure out zoom and center issue after routes load)
-//TODO: display real locations
-
 class SimpleMap extends Component {
 
     constructor(props) {
