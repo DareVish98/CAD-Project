@@ -65,6 +65,11 @@ export default function RatingBox() {
     const jump = () => {
         setIsView(!isView);
     };
+
+    const logged = () => {
+        return localStorage.getItem("username") === '' && localStorage.getItem("password") === '';
+    };
+
     return(
         <div>
             <Button variant="contained" color="primary" className={classes.reviews_button} onClick={expand_collapse_box}>Reviews</Button>
@@ -74,7 +79,7 @@ export default function RatingBox() {
                     <div style={margin_x} className={classes.inner_container}>
                         <div style={{float: 'left'}}>
                             <Review />
-                            <Button color="primary" style={{margin:'18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
+                            <Button color="primary" disabled={logged()} style={{margin:'18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
                         </div>
                         <div style={{float: 'left'}}>
                             <AddReview />

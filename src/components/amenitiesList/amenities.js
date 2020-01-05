@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
@@ -21,22 +21,23 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-//TODO: load real amenities from backend
-let amenities = [{content: 'Shop - 800m'},{content: 'Gym - 1km'},{content: 'University - 500m'}];
-const display_list = () => {
+const display_list = (amenities) => {
     return (
         amenities.map( amenity => {
             return (
                 <ListItem>
-                    <ListItemText primary={amenity.content}/>
+                    <ListItemText primary={amenity.tag + ' - ' + amenity.distance + 'm'}/>
                 </ListItem>
             );
         })
     );
 };
 
-export default function AmenitiesList() {
+export default function AmenitiesList({amenities}) {
     const classes = useStyles();
+    const [value, setValue] = useState(amenities);
+
+    useEffect(() => { setValue(amenities) }, [amenities]);
 
     return (
         <Paper className={classes.amenities_container}>
@@ -44,7 +45,7 @@ export default function AmenitiesList() {
                 Amenities:
             </div>
             <List>
-                {display_list()}
+                {display_list(value)}
             </List>
         </Paper>
     );
