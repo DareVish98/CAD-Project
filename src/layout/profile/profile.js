@@ -5,13 +5,50 @@ import Typography from "@material-ui/core/Typography";
 import ListingList from "../../components/profileDetails/listingList";
 import UpdateProfile from "../../components/profileDetails/updateProfile";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default class ProfilePage extends React.Component
 {
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            username: localStorage.getItem("username"),
+            password: '',
+            email: '',
+            phone: '',
+            listings: []
+        };
+    }
+
     handleLogout = () => {
         localStorage.setItem("username", '');
         localStorage.setItem("password", '');
     };
+
+    componentDidMount() {
+        axios.get("http://localhost:8080/users/" + localStorage.getItem("username") + "/")
+            .then(res => {
+                this.setState({email: res.data.email, phone: res.data.phone});
+            }).catch((error) => {
+            if (error.response) {
+                alert(error.response.status + ' request failed: ' + error.response.data);
+            } else {
+                alert('Request failed: ' + error.message);
+            }
+        });
+
+        axios.get("http://localhost:8000/listings/" + localStorage.getItem("username") + "/")
+            .then(res => {
+                this.setState({listings: res.data});
+            }).catch((error) => {
+            if (error.response) {
+                alert(error.response.status + ' request failed: ' + error.response.data);
+            } else {
+                alert('Request failed: ' + error.message);
+            }
+        });
+    }
 
     render() {
         return (
@@ -34,11 +71,11 @@ export default class ProfilePage extends React.Component
                     </Link>
                 </Grid>
                 <Grid item xs={6} style={{paddingLeft: 50, paddingTop: 40}}>
-                    <UpdateProfile/>
+                    <UpdateProfile details={this.state}/>
                     <br/>
                 </Grid>
                 <Grid item xs={6} style={{paddingLeft: 40, paddingTop: 40}}>
-                    <ListingList/>
+                    <ListingList list={this.state.listings} />
                 </Grid>
             </Grid>
         );

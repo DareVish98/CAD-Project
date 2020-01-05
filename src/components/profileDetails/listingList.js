@@ -7,71 +7,64 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Link} from "react-router-dom";
 import Edit_Listing_Button from "../editListing/editListing";
+import axios from "axios";
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        width: 620,
-        height: 540
-    }
-}));
-
-function createData(name) {
-    return {name};
-}
-
-//TODO: Link actual listings using axios
-//TODO: Create Delete function and update backend with axios
-
-const listings = [
-    createData("listingOneeeeeeeeeeeee"),
-    createData('listing2'),
-    createData('listing3'),
-    createData('listing4'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3'),
-    createData('listing3')
-];
-
-export default function ListingList()
+export default class ListingList extends React.Component
 {
-    const classes = useStyles();
+    constructor(props)
+    {
+        super(props);
+        this.state = {
+            listings: props.list
+        };
+    }
 
-    return(
-        <Paper className={classes.paper}>
-            <Typography variant="h6" gutterBottom>
-                Your listings
-            </Typography>
-            <TableContainer style={{overflowY: 'scroll', height: '500px'}}>
-                <Table>
-                    <TableBody>
-                        {listings.map(row => (
-                            <TableRow key={row.name}>
-                                <TableCell component={Link} to={'/listing=' + row.name}>
-                                    {row.name}
-                                </TableCell>
-                                <TableCell>
-                                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                                        <Edit_Listing_Button/>
-                                        <Button variant="contained" style={{backgroundColor: '#DC143C', color: '#FFFFFF', fontSize: 12}}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Paper>
-    )
+    render()
+    {
+        return(
+            <Paper style={{paddingLeft: "10px", paddingRight: "10px", paddingBottom: "10px", textAlign: 'center', width: 630, height: 562}}>
+                <Typography variant="h6" gutterBottom>
+                    Your listings
+                </Typography>
+                <TableContainer style={{overflowY: 'scroll', height: '500px'}}>
+                    <Table>
+                        <TableBody>
+                            {this.state.listings.map(row => (
+                                <TableRow key={row.address + ' ' + row.postcode}>
+                                    <TableCell component={Link} to={'/listing=' + row.address}>
+                                        {row.address + ' ' + row.postcode}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div style={{display: 'flex', flexDirection: 'row'}}>
+                                            <Edit_Listing_Button details={row}/>
+                                            <Button
+                                                variant="contained"
+                                                style={{backgroundColor: '#DC143C', color: '#FFFFFF', fontSize: 12}}
+                                                onClick={
+                                                    () => {
+                                                        axios.delete("http://localhost:8000/listings/" + row.address)
+                                                            .then(res => {
+                                                                alert('Listing has been removed');
+                                                            }).catch( (error) => {
+                                                            if (error.response) {
+                                                                alert(error.response.status + ' request failed: ' + error.response.data);
+                                                            } else {
+                                                                alert('Request failed: ' + error.message);
+                                                            }
+                                                        });
+                                                    }
+                                                }> Delete
+                                            </Button>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        );
+    }
 }
