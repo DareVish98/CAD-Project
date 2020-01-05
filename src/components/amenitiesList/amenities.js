@@ -22,15 +22,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const display_list = (amenities) => {
-    return (
-        amenities.map( amenity => {
-            return (
-                <ListItem>
-                    <ListItemText primary={amenity.tag + ' - ' + amenity.distance + 'm'}/>
-                </ListItem>
-            );
-        })
-    );
+
+    if (amenities.length > 0) {
+        return (
+            amenities.map(amenity => {
+                return (
+                    <ListItem>
+                        <ListItemText primary={amenity.tag + ' - ' + amenity.distance + 'm'}/>
+                    </ListItem>
+                );
+            })
+        );
+    } else {
+        return (
+            <ListItem>
+                <ListItemText primary={'No amenities in a 1500m radius'}/>
+            </ListItem>
+        );
+    }
 };
 
 export default function AmenitiesList({amenities}) {
