@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const display_list = (listings) => {
 	return (
 		listings.map( listing => {
-			let label = listing.address + ' ' + listing.postcode;
+			let label = listing.address + ', ' + listing.postcode;
 			return (
 				<ListItem button component={Link} to={'/listing=' + listing.address}>
 				<ListItemText primary={label}/>

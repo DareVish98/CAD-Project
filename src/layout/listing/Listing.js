@@ -37,7 +37,7 @@ class Listing extends Component {
                         lat: response.data.lat,
                         lng: response.data.lng,
                     },
-                    tag: response.data.address + ' ' + response.data.postcode,
+                    tag: response.data.address + ', ' + response.data.postcode,
                     address: response.data.address
                 };
                 this.setState({locations: [response.data]});
@@ -87,7 +87,7 @@ class Listing extends Component {
                 <Paper
                     style={{width: '400px', position: 'fixed', top: '2%', left: '2%', backgroundColor: '#404040'}}>
                     <Typography component={"p"} style={{margin: '2%', textAlign: "center", color: '#FFFFFF'}}>
-                        Listing {this.props.match.params.id} - 450£/month
+                        Listing {this.props.match.params.id + ', ' + this.state.listing.postcode} - 450£/month
                     </Typography>
                 </Paper>
                 <AmenitiesList amenities={this.state.amenities}/>
