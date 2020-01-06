@@ -30,7 +30,6 @@ export default function AddReview({review, listing}) {
     useEffect(() => { setData(listing) }, [listing]);
 
     async function submitReview() {
-        console.log(comment);
         await axios.post(
             'http://localhost:8000/api/postreview/',
             {username: localStorage.getItem('username'), address: data.address, rating: value, description: comment},

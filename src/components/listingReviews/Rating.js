@@ -76,7 +76,7 @@ export default function RatingBox({listing}) {
     };
 
     async function getListings() {
-        await axios.get('http://localhost:8000/reviews/' + value.address + '/')
+        await axios.get('http://localhost:8000/reviews/' + listing.address + '/')
             .then((response) => {
                 setReviews(response.data);
             }).catch( (error) => {

@@ -25,6 +25,14 @@ export default class ListingList extends React.Component
             })
     }
 
+    componentDidUpdate(prevProps) {
+        const list = this.props.list;
+
+        if (list !== prevProps.list) {
+            this.setState({list: list});
+        }
+    }
+
     render()
     {
         return(
@@ -42,7 +50,7 @@ export default class ListingList extends React.Component
                                     </TableCell>
                                     <TableCell>
                                         <div style={{display: 'flex', flexDirection: 'row'}}>
-                                            <Edit_Listing_Button details={row}/>
+                                            <Edit_Listing_Button data={row}/>
                                             <Button
                                                 variant="contained"
                                                 style={{backgroundColor: '#DC143C', color: '#FFFFFF', fontSize: 12}}
