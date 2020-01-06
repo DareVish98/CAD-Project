@@ -18,11 +18,8 @@ url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
 def thread_function(location, address):
     listing = Listing.objects.get(address=address)
     language = 'en-GB'
-    keywordTypes = [('store', 'grocery_or_supermarket'), ('store', 'drugstore'), ('atm', 'atm'),
-                    ('theater', 'movie_theater'), ('bus', 'bus_station'), ('post', 'post_office'),
-                    ('store', 'convenience_store'), ('food', 'restaurant'), ('shopping', 'shopping_mall'),
-                    ('gym', 'gym'), ('barber', 'hair_care'), ('train', 'train_station'), ('airport', 'airport'),
-                    ('university', 'university'), ('hospital', 'hospital'), ('bank', 'bank')]
+    keywordTypes = [('store', 'grocery_or_supermarket'), ('bus', 'bus_station'), ('food', 'restaurant'),
+                    ('gym', 'gym'), ('university', 'university')]
 
     for pair in keywordTypes:
         keyword = pair[0]
