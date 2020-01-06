@@ -47,6 +47,7 @@ class App extends Component {
 	};
 
 	handleFilter = (filter) => {
+	    console.log(filter);
 		let matrix = [[],[],[],[],[],[],[],[],[]];
 		let arrays = [];
 		for (let i = 0; i < this.state.listings.length; i++) {
@@ -85,7 +86,7 @@ class App extends Component {
 			} else {
 				matrix[4].push(this.state.listings[i]);
 			}
-			if (filter.validFrom !== Date.now()) {
+			if (filter.dateSet === true) {
 				if (this.state.listings[i].valid_from >= filter.validFrom)
 					matrix[5].push(this.state.listings[i]);
 				if (!arrays.includes(5)) arrays.push(5);
@@ -114,6 +115,8 @@ class App extends Component {
 				matrix[8].push(this.state.listings[i]);
 			}
 		}
+		console.log(matrix);
+		console.log(arrays);
 		let result = matrix[arrays[0]];
 		for (let j = 1; j < arrays.length; j++) {
 			result.filter(value => matrix[arrays[j]].includes(value));
