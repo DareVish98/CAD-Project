@@ -104,10 +104,8 @@ export default function Login_Reg_Button({onLoginRegister}) {
           {username: username, password: password},
           {headers: {'Content-Type': 'application/json'}}
       ).then( (response) => {
-          if (response.username === username) {
-              onLoginRegister(username, password);
-              hide_box();
-          }
+          onLoginRegister(username, password);
+          hide_box();
       }).catch( (error) => {
           if (error.response) {
               alert(error.response.status + ' request failed: ' + error.response.data);
@@ -123,10 +121,8 @@ export default function Login_Reg_Button({onLoginRegister}) {
           {username: newUsername, password: newPassword, email: email, phone: phone},
           {headers: {'Content-Type': 'application/json'}}
       ).then( (response) => {
-          if (true) {
-              onLoginRegister(newUsername, newPassword);
-              hide_box();
-          }
+          onLoginRegister(newUsername, newPassword);
+          hide_box();
       }).catch( (error) => {
           if (error.response) {
               alert(error.response.status + ' request failed: ' + error.response.data);
