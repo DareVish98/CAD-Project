@@ -20,13 +20,13 @@ from main_app import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserView, 'User')
-router.register(r'amenites', views.AmenityView, 'Amenity')
+router.register(r'amenity', views.AmenityView, 'Amenity')
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('listings/<username>/', views.UsersListingView.as_view({'get': 'list'})),
+    path('listings/<username>/', views.UsersListingView),
     path('reviews/<listing>/', views.ListingReviewView.as_view({'get': 'list'})),
-    path('users/<username>/', views.ListingReviewView.as_view({'get': 'list'})),
+    path('users/<username>/', views.UserInfoView.as_view({'get': 'list'})),
     url(r'^api/listings/$', views.listing_list),
     path('api/listings/<address>/', views.listing_detail),
     path('api/amenities/<address>/', views.amenities_listing),

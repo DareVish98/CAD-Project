@@ -29,5 +29,5 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Review
+        model = CustomUser
         fields = ('phone', 'username', 'email')
