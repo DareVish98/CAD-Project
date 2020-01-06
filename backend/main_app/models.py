@@ -40,7 +40,7 @@ class Listing(models.Model):
 
 
 class Review(models.Model):
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    address = models.ForeignKey(Listing, on_delete=models.CASCADE)
     username = models.CharField(max_length=30)
     rating = models.FloatField()
     description = models.TextField()
