@@ -204,7 +204,7 @@ export default function Edit_Listing_Button({data}) {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtil}>
-                                        <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="dd/MM/yyyy" label="Available From" className={classes.input_field} value={selectedFromDate} onChange={date => handleFromDateChange(date)}/>
+                                        <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="yyyy-MM-dd" label="Available From" className={classes.input_field} value={selectedFromDate} onChange={date => handleFromDateChange(date)}/>
                                     </MuiPickersUtilsProvider>
                                 </Grid>
                                 <Grid item xs={6}>
