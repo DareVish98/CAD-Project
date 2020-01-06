@@ -129,11 +129,13 @@ class ListingReviewView(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        return Review.objects.filter(listing=self.kwargs['listing'])
+        return Review.objects.filter(address=self.kwargs['address'])
 
 
+@api_view(['POST'])
 def create_review(request):
     serializer = ReviewSerializer(data=request.data)
+    print(serializer.errors)
     if serializer.is_valid():
         serializer.save()
         return Response(status=status.HTTP_201_CREATED)
