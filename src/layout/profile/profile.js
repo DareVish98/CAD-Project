@@ -19,6 +19,7 @@ export default class ProfilePage extends React.Component
             phone: '',
             listings: []
         };
+        this.getData();
     }
 
     handleLogout = () => {
@@ -26,10 +27,10 @@ export default class ProfilePage extends React.Component
         localStorage.setItem("password", '');
     };
 
-    componentDidMount() {
-        axios.get("http://localhost:8080/users/" + localStorage.getItem("username") + "/")
+    async getData() {
+        await axios.get("http://localhost:8000/users/" + localStorage.getItem("username") + "/")
             .then(res => {
-                this.setState({email: res.data.email, phone: res.data.phone});
+                this.setState({email: res.data[0].email, phone: res.data[0].phone});
             }).catch((error) => {
             if (error.response) {
                 alert(error.response.status + ' request failed: ' + error.response.data);
@@ -38,7 +39,7 @@ export default class ProfilePage extends React.Component
             }
         });
 
-        axios.get("http://localhost:8000/listings/" + localStorage.getItem("username") + "/")
+        await axios.get("http://localhost:8000/listings/" + localStorage.getItem("username") + "/")
             .then(res => {
                 this.setState({listings: res.data});
             }).catch((error) => {

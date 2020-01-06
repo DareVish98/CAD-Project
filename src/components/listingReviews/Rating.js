@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -40,12 +40,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function RatingBox({name, address}) {
+export default function RatingBox({listing}) {
     const classes = useStyles();
     const [isExpand, setIsExpand] = React.useState(false);
     const [isView, setIsView] = React.useState(true);
     const [reviews, setReviews] = React.useState({});
     let margin_x;
+    const [value, setValue] = React.useState(listing);
+
+    useEffect(() => { setValue(listing); getListings(); }, [listing]);
 
     const view = {
         margin: '0 0 0 0'
@@ -73,7 +76,7 @@ export default function RatingBox({name, address}) {
     };
 
     async function getListings() {
-        await axios.get('http://localhost:8000/reviews/' + address + '/')
+        await axios.get('http://localhost:8000/reviews/' + listing.address + '/')
             .then((response) => {
                 setReviews(response.data);
             }).catch( (error) => {
@@ -104,7 +107,7 @@ export default function RatingBox({name, address}) {
                                         Review</Button>
                                 </div>
                                 <div style={{float: 'left'}}>
-                                    <AddReview review={edit} name={name} address={address}/>
+                                    <AddReview review={edit} listing={value}/>
                                     <Button color="primary" style={{margin: '18px 0 30px 140px'}}
                                             onClick={jump}>Back</Button>
                                 </div>
@@ -130,7 +133,7 @@ export default function RatingBox({name, address}) {
                                 <Button color="primary" disabled={logged()} style={{margin: '18px 0 30px 450px'}} onClick={jump}>Add Review</Button>
                             </div>
                             <div style={{float: 'left'}}>
-                                <AddReview review={{reviewer: '', rating: 5, comment: ''}} name={name} address={address}/>
+                                <AddReview review={{username: '', rating: 5, description: ''}} listing={value}/>
                                 <Button color="primary" style={{margin: '18px 0 30px 140px'}}
                                         onClick={jump}>Back</Button>
                             </div>

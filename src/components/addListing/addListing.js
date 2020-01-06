@@ -153,7 +153,7 @@ export default function New_Listing_Button() {
             'http://localhost:8000/api/listings/',
             {username: localStorage.getItem("username"), owner: owner, address: address, town: town,
                 county: county, postcode: postcode, description: description, price: price, phone: phone,
-                email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,
+                email: email, selectedFromDate: selectedFromDate, selectedBedrooms: selectedBedrooms, selectedContractLength: selectedContractLength,
                 energy: Energy, water: Water, internet: Internet, gas: Gas, image1_tag: tag1, image1_data: data1, image2_tag: tag2,
                 image2_data: data2, image3_tag: tag3, image3_data: data3, lat: lat, lng: lng
             },
@@ -206,7 +206,7 @@ export default function New_Listing_Button() {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={DateFnsUtil}>
-                                        <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="dd/MM/yyyy" label="Available From" className={classes.input_field} value={selectedFromDate} onChange={date => handleFromDateChange(date)}/>
+                                        <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="yyyy-MM-dd" label="Available From" className={classes.input_field} value={selectedFromDate} onChange={date => handleFromDateChange(date)}/>
                                     </MuiPickersUtilsProvider>
                                 </Grid>
                                 <Grid item xs={6}>

@@ -19,6 +19,18 @@ export default class ListingList extends React.Component
         this.state = {
             listings: props.list
         };
+		axios.get("http://localhost:8000/listings/" + localStorage.getItem("username") + "/")
+            .then(res => {
+                this.setState({listings: res.data});
+            })
+    }
+
+    componentDidUpdate(prevProps) {
+        const list = this.props.list;
+
+        if (list !== prevProps.list) {
+            this.setState({list: list});
+        }
     }
 
     render()
@@ -32,19 +44,19 @@ export default class ListingList extends React.Component
                     <Table>
                         <TableBody>
                             {this.state.listings.map(row => (
-                                <TableRow key={row.address + ' ' + row.postcode}>
+                                <TableRow key={row.address + ', ' + row.postcode}>
                                     <TableCell component={Link} to={'/listing=' + row.address}>
-                                        {row.address + ' ' + row.postcode}
+                                        {row.address + ', ' + row.postcode}
                                     </TableCell>
                                     <TableCell>
                                         <div style={{display: 'flex', flexDirection: 'row'}}>
-                                            <Edit_Listing_Button details={row}/>
+                                            <Edit_Listing_Button data={row}/>
                                             <Button
                                                 variant="contained"
                                                 style={{backgroundColor: '#DC143C', color: '#FFFFFF', fontSize: 12}}
                                                 onClick={
                                                     () => {
-                                                        axios.delete("http://localhost:8000/listings/" + row.address)
+                                                        axios.delete("http://localhost:8000/api/listings/" + row.address)
                                                             .then(res => {
                                                                 alert('Listing has been removed');
                                                             }).catch( (error) => {

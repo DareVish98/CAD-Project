@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -72,9 +72,10 @@ const utilities_list = (details) => {
     );
 };
 
-export default function Listing_Details({details}) {
+export default function Listing_Details({info}) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [details, setDetails] = React.useState(info);
 
     const display_box = () => {
         setOpen(!open);
@@ -83,6 +84,8 @@ export default function Listing_Details({details}) {
     const hide_box = () => {
         setOpen(false);
     };
+
+    useEffect(() => { setDetails(info) }, [info]);
 
     return (
         <div>
@@ -98,23 +101,24 @@ export default function Listing_Details({details}) {
                     <div className={classes.listing_details_inner_container}>
                         <Typography className={classes.field}>Owner: {details.owner}</Typography>
                         <Typography className={classes.field}>Price: {details.price}</Typography>
-                        <Typography className={classes.field}>Contract Length: {details.contract_length}</Typography>
+                        <Typography className={classes.field}>Contract Length: {details.selectedContractLength}</Typography>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <Typography className={classes.field}>Included Facilities:</Typography>
-                            <Typography className={classes.field}>Installments:</Typography>
+                            <div style={{paddingTop: 10, paddingLeft: 100, width: 200}}>
+                                <Typography className={classes.field}>Start Date: {details.selectedFromDate}</Typography>
+                            </div>
                         </div>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <div style={{display: 'flex', flexDirection: 'column', paddingLeft: '2%'}}>
                                 {utilities_list(details)}
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'column'}}>
-                                <Typography className={classes.field}>Start Date: {details.valid_from}</Typography>
-                                <Typography className={classes.field}>Bedrooms: {details.bedrooms}</Typography>
+                            <div style={{paddingLeft: 100, paddingTop: 20, width: 150}}>
+                                <Typography className={classes.field}>Bedrooms: {details.selectedBedrooms}</Typography>
                             </div>
                         </div>
                         <Typography className={classes.field}>Description:</Typography>
                         <div style={{paddingLeft: '2%'}}>
-                            <TextField multiline={true} rowsMin={8} rowsMax={8} className={classes.textArea} disabled={true}
+                            <TextField multiline={true} rows={6} className={classes.textArea} disabled={true}
                                 defaultValue={details.description}
                             />
                         </div>
