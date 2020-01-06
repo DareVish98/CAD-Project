@@ -11,15 +11,27 @@ export default class UpdateProfile extends React.Component
     {
         super(props);
         this.state = {
-            username: props.details.username,
+            username: this.props.details.username,
             password: '',
             confirm_password: '',
             email: props.details.email,
-            phone: props.details.phone,
+            phone: props.details.phone
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        const phone = this.props.details.phone;
+        const email = this.props.details.email;
+
+        if (phone !== prevProps.details.phone) {
+            this.setState({phone: phone});
+        }
+        if (email !== prevProps.details.email) {
+            this.setState({email: email});
+        }
     }
 
     handleChange(event)

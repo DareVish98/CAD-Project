@@ -21,7 +21,7 @@ class Listing extends Component {
             pictures: []
         };
         this.getListing();
-        this.getLocations();
+        setTimeout(() => {this.getLocations()}, 500);
     }
 
     handleAmenities = (amenities) => {
@@ -40,7 +40,7 @@ class Listing extends Component {
                     tag: response.data.address + ', ' + response.data.postcode,
                     address: response.data.address
                 };
-                this.setState({locations: [response.data]});
+                this.setState({locations: [location]});
                 let pictures = [
                     {
                         data: response.data.image1_data,
@@ -68,10 +68,10 @@ class Listing extends Component {
     async getLocations() {
         await axios.get('http://localhost:8000/api/amenities/' + this.props.match.params.id + '/')
             .then((response) => {
-                let aux = this.state.locations;
-                //aux.concat(response.data);
-                //this.setState({locations: aux});
-                this.setState({locations: response.data});
+                let aux = [];
+                aux.push(this.state.locations[0]);
+                let result = aux.concat(response.data);
+                this.setState({locations: result});
             }).catch((error) => {
                 if (error.response) {
                     alert(error.response.status + ' request failed: ' + error.response.data);
