@@ -25,7 +25,7 @@ router.register(r'amenity', views.AmenityView, 'Amenity')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('listings/<username>/', views.UsersListingView),
-    path('reviews/<listing>/', views.ListingReviewView.as_view({'get': 'list'})),
+    path('reviews/<address>/', views.ListingReviewView.as_view({'get': 'list'})),
     path('users/<username>/', views.UserInfoView.as_view({'get': 'list'})),
     url(r'^api/listings/$', views.listing_list),
     path('api/listings/<address>/', views.listing_detail),
