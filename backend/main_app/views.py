@@ -1,3 +1,5 @@
+import threading
+
 import requests
 from django.contrib.auth import authenticate
 from rest_framework import viewsets, status
@@ -12,6 +14,34 @@ api_key = 'AIzaSyCEiD8oRAMONUJGI9OAgPNYwa7x7oR5uGc'
 
 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
 
+
+def thread_function(location, address):
+    listing = Listing.objects.get(address=address)
+    language = 'en-GB'
+    keywordTypes = [('store', 'grocery_or_supermarket'), ('store', 'drugstore'), ('atm', 'atm'),
+                    ('theater', 'movie_theater'), ('bus', 'bus_station'), ('post', 'post_office'),
+                    ('store', 'convenience_store'), ('food', 'restaurant'), ('shopping', 'shopping_mall'),
+                    ('gym', 'gym'), ('barber', 'hair_care'), ('train', 'train_station'), ('airport', 'airport'),
+                    ('university', 'university'), ('hospital', 'hospital'), ('bank', 'bank')]
+
+    for pair in keywordTypes:
+        keyword = pair[0]
+        typePlace = pair[1]
+        request = (url + 'location=' + location +
+                   '&language=' + language +
+                   '&keyword=' + keyword +
+                   '&rankby=distance'
+                   '&type=' + typePlace +
+                   '&key=' + api_key)
+        r = requests.get(request)
+        x = r.json()
+        y = x['results']
+        # This is what we need in the frontend in a list of tuples
+        if len(y) > 0:
+            tag = y[0]['name']
+            position = y[0]['geometry']['location']
+            Amenity(tag=tag, address=listing, lat=position['lat'], lng=position['lng']).save()
+
 @api_view(['GET', 'POST'])
 def listing_list(request):
     if request.method == 'GET':
@@ -24,37 +54,11 @@ def listing_list(request):
         user = CustomUser.objects.get(username=request.data["username"])
         request.data["username"]=user.id
         serializer = ListingSerializer(data=request.data)
-        serializer.is_valid()
-        print(serializer.errors)
         if serializer.is_valid():
             serializer.save()
-            location = request.data["lat"]+", "+request.data["lng"]
+            location = request.data["lat"] + ", " + request.data["lng"]
             address = request.data['address']
-            listing = Listing.objects.get(address=address)
-            language = 'en-GB'
-            keywordTypes = [('store', 'grocery_or_supermarket'), ('store', 'drugstore'), ('atm', 'atm'),
-                            ('theater', 'movie_theater'), ('bus', 'bus_station'), ('post', 'post_office'),
-                            ('store', 'convenience_store'), ('food', 'restaurant'), ('shopping', 'shopping_mall'),
-                            ('gym', 'gym'), ('barber', 'hair_care'), ('train', 'train_station'), ('airport', 'airport'),
-                            ('university', 'university'), ('hospital', 'hospital'), ('bank', 'bank')]
-
-            for pair in keywordTypes:
-                keyword = pair[0]
-                typePlace = pair[1]
-                request = (url + 'location=' + location +
-                           '&language=' + language +
-                           '&keyword=' + keyword +
-                           '&rankby=distance'
-                           '&type=' + typePlace +
-                           '&key=' + api_key)
-                r = requests.get(request)
-                x = r.json()
-                y = x['results']
-                # This is what we need in the frontend in a list of tuples
-                if len(y) > 0:
-                    tag = y[0]['name']
-                    position = y[0]['geometry']['location']
-                    Amenity(tag=tag, address=listing, lat=position['lat'], lng=position['lng']).save()
+            threading.Thread(target=thread_function, args=(location, address)).start()
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
