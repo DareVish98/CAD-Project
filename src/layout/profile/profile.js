@@ -27,7 +27,7 @@ export default class ProfilePage extends React.Component
     };
 
     componentDidMount() {
-        axios.get("http://localhost:8080/users/" + localStorage.getItem("username") + "/")
+        axios.get("http://localhost:8000/users/" + localStorage.getItem("username") + "/")
             .then(res => {
                 this.setState({email: res.data.email, phone: res.data.phone});
             }).catch((error) => {

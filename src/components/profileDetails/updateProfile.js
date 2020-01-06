@@ -15,7 +15,7 @@ export default class UpdateProfile extends React.Component
             password: '',
             confirm_password: '',
             email: props.details.email,
-            phone_number: props.details.phone_number,
+            phone: props.details.phone,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -40,7 +40,7 @@ export default class UpdateProfile extends React.Component
                 username: this.state.username,
                 password: this.state.password,
                 email: this.state.email,
-                phone_number: this.state.phone_number
+                phone: this.state.phone
             }
         }
         else
@@ -50,11 +50,11 @@ export default class UpdateProfile extends React.Component
                 username: this.state.username,
                 password: localStorage.getItem("password"),
                 email: this.state.email,
-                phone_number: this.state.phone_number
+                phone: this.state.phone
             }
         }
 
-        axios.put("http://localhost:8000/users/" + localStorage.getItem("username") + "/", {updatedProfile})
+        axios.put("http://localhost:8000/api/user/create/", updatedProfile)
             .then(res => {
                 alert("Profile updated successfully");
             }).catch( (error) => {
@@ -78,7 +78,7 @@ export default class UpdateProfile extends React.Component
                     <TextField id="password" fullWidth variant="outlined" name="password" label="Password" style={{display: 'block', margin: '20px 0 0 0'}} value={this.state.password} onChange={this.handleChange}/>
                     <TextField id="confirm_password" fullWidth variant="outlined" name="confirm_password" label="Confirm Password" style={{display: 'block', margin: '20px 0 0 0'}} value={this.state.confirm_password} onChange={this.handleChange}/>
                     <TextField id="email" fullWidth variant="outlined" label="Email" name="email" style={{display: 'block', margin: '20px 0 0 0'}} value={this.state.email} onChange={this.handleChange}/>
-                    <TextField id="phone_number" fullWidth variant="outlined" name="phone_number" label="Phone Number" style={{display: 'block', margin: '20px 0 0 0'}} value={this.state.phone_number} onChange={this.handleChange}/>
+                    <TextField id="phone" fullWidth variant="outlined" name="phone" label="Phone Number" style={{display: 'block', margin: '20px 0 0 0'}} value={this.state.phone} onChange={this.handleChange}/>
                     <Button type="submit" variant="contained" color="primary" style={{display: 'block', margin: '20px 0 0 0'}}>
                         Update Profile
                     </Button>

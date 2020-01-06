@@ -47,23 +47,23 @@ const useStyles = makeStyles(theme => ({
 export default function Edit_Listing_Button(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [owner, setOwner] = React.useState(props.owner);
-    const [address, setAddress] = React.useState(props.address);
-    const [town, setTown] = React.useState(props.town);
-    const [county, setCounty] = React.useState(props.county);
-    const [postcode, setPostcode] = React.useState(props.postcode);
-    const [description, setDescription] = React.useState(props.description);
-    const [price, setPrice] = React.useState(props.price);
-    const [phone, setPhone] = React.useState(props.phone);
-    const [email, setEmail] = React.useState(props.email);
-    const [lat, setLat] = React.useState(props.lat);
-    const [lng, setLng] = React.useState(props.lng);
-    const [selectedFromDate, handleFromDateChange] = React.useState(props.valid_from);
-    const [selectedContractLength, setContractLength] = React.useState(props.contract_length);
+    const [owner, setOwner] = React.useState(props.details.owner);
+    const [address, setAddress] = React.useState(props.details.address);
+    const [town, setTown] = React.useState(props.details.town);
+    const [county, setCounty] = React.useState(props.details.county);
+    const [postcode, setPostcode] = React.useState(props.details.postcode);
+    const [description, setDescription] = React.useState(props.details.description);
+    const [price, setPrice] = React.useState(props.details.price);
+    const [phone, setPhone] = React.useState(props.details.phone);
+    const [email, setEmail] = React.useState(props.details.email);
+    const [lat, setLat] = React.useState(props.details.lat);
+    const [lng, setLng] = React.useState(props.details.lng);
+    const [selectedFromDate, handleFromDateChange] = React.useState(props.details.valid_from);
+    const [selectedContractLength, setContractLength] = React.useState(props.details.contract_length);
     const contractLengths = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","24+"];
-    const [selectedBedrooms, setBedrooms] = React.useState(props.bedrooms);
+    const [selectedBedrooms, setBedrooms] = React.useState(props.details.bedrooms);
     const roomAmounts = ["1","2","3","4","5","6","7","8","9","10"];
-    const [billsState, setBillsState] = React.useState({Energy: props.energy,Water:props.water,Internet:props.internet,Gas:props.gas});
+    const [billsState, setBillsState] = React.useState({Energy: props.details.energy,Water:props.details.water,Internet:props.details.internet,Gas:props.details.gas});
     const {Energy,Water,Internet,Gas} = billsState;
     const [files, setFiles] = React.useState([]);
 
@@ -147,7 +147,7 @@ export default function Edit_Listing_Button(props) {
         }
 
         await axios.put(
-            'http://localhost:8000/api/listings/',
+            'http://localhost:8000/api/listings/'+props.details.address+'/',
             {username: localStorage.getItem("username"), owner: owner, address: address, town: town,
                 county: county, postcode: postcode, description: description, price: price, phone: phone,
                 email: email, valid_from: selectedFromDate, bedrooms: selectedBedrooms, contract_length: selectedContractLength,

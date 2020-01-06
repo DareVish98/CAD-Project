@@ -69,8 +69,10 @@ class Listing extends Component {
         await axios.get('http://localhost:8000/api/amenities/' + this.props.match.params.id + '/')
             .then((response) => {
                 let aux = this.state.locations;
-                aux.concat(response.data);
-                this.setState({locations: aux});
+                //aux.concat(response.data);
+                //this.setState({locations: aux});
+                this.setState({locations: response.data});
+				console.log(this.state.locations);
             }).catch((error) => {
                 if (error.response) {
                     alert(error.response.status + ' request failed: ' + error.response.data);
