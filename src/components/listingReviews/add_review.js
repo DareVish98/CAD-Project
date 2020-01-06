@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
@@ -19,17 +19,21 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function AddReview({review, name, address}) {
+export default function AddReview({review, listing}) {
     const classes = useStyles();
 
     const [value, setValue] = React.useState(review.rating);
     const [hoverValue, setHoverValue] = React.useState(-1);
-    const [comment, setComment] = React.useState(review.comment);
+    const [comment, setComment] = React.useState(review.description);
+    const [data, setData] = React.useState(listing);
+
+    useEffect(() => { setData(listing) }, [listing]);
 
     async function submitReview() {
+        console.log(comment);
         await axios.post(
             'http://localhost:8000/api/postreview/',
-            {reviewer: localStorage.getItem('username'), address: address, rating: value, description: comment},
+            {username: localStorage.getItem('username'), address: data.address, rating: value, description: comment},
             {headers: {'Content-Type': 'application/json'}}
         ).then( () => {
             alert("Your review has been submitted");
@@ -45,7 +49,7 @@ export default function AddReview({review, name, address}) {
     return (
         <div className={classes.inner_container}>
             <Typography variant='h5'>
-                Rate {name}
+                Rate {data.address + ', ' + data.postcode}
             </Typography>
             <form>
                 <Rating
@@ -69,9 +73,7 @@ export default function AddReview({review, name, address}) {
                     id="comment"
                     value={comment}
                     className={classes.input_field}
-                    onChange={(e, newValue) => {
-                        setComment(newValue);
-                    }}
+                    onChange={e => setComment(e.target.value)}
                     label="Your Comment"
                     multiline
                     variant="outlined"
@@ -79,7 +81,7 @@ export default function AddReview({review, name, address}) {
                     rows={14}
                 />
                 <Button color="primary" variant="contained" style={{float: 'right', margin: '18px 40px 0 0'}}
-                        onClick={() => submitReview}>Submit</Button>
+                        onClick={() => submitReview()}>Submit</Button>
             </form>
         </div>
     );

@@ -72,7 +72,6 @@ class Listing extends Component {
                 //aux.concat(response.data);
                 //this.setState({locations: aux});
                 this.setState({locations: response.data});
-				console.log(this.state.locations);
             }).catch((error) => {
                 if (error.response) {
                     alert(error.response.status + ' request failed: ' + error.response.data);
@@ -93,8 +92,8 @@ class Listing extends Component {
                     </Typography>
                 </Paper>
                 <AmenitiesList amenities={this.state.amenities}/>
-                <Listing_Details details={this.state.listing}/>
-                <RatingBox name={this.state.locations[0].tag} address={this.state.listing.address}/>
+                <Listing_Details info={this.state.listing}/>
+                <RatingBox listing={this.state.listing}/>
                 <Listing_Pictures images={this.state.pictures}/>
                 <Paper>
                     <Link to={"/"}>

@@ -58,12 +58,13 @@ export default function Filter({onFilter}) {
     const [bedMax, setBedMax] = React.useState('');
     const [contractMin, setContractMin] = React.useState('');
     const [contractMax, setContractMax] = React.useState('');
-    const [validFrom, setValidFrom] = React.useState(new Date());
+    const [validFrom, setValidFrom] = React.useState(Date.now);
     const [energy, setEnergy] = React.useState(false);
     const [gas, setGas] = React.useState(false);
     const [internet, setInternet] = React.useState(false);
     const [water, setWater] = React.useState(false);
     const [address, setAddress] = React.useState('');
+    const [dateSet, setDateSet] = React.useState(false);
 
 
     const display_box = () => {
@@ -84,6 +85,7 @@ export default function Filter({onFilter}) {
         setPriceMax('');
         setPriceMin('');
         setValidFrom(Date.now);
+        setDateSet(false);
     };
 
     function validate () {
@@ -113,7 +115,8 @@ export default function Filter({onFilter}) {
             energy: energy,
             gas: gas,
             internet: internet,
-            water: water
+            water: water,
+            dateSet: dateSet
         };
         onFilter(filter);
         hide_box();
@@ -160,7 +163,7 @@ export default function Filter({onFilter}) {
                             </div>
                             <div style={{fontSize: 20, paddingLeft: 30, paddingTop: 20}}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtil}>
-                                    <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="yyyy/MM/dd" label="Available From" value={validFrom} onChange={date => setValidFrom(date)}/>
+                                    <KeyboardDatePicker id="available_from" disablePast disableToolbar fullWidth variant="inline" format="yyyy/MM/dd" label="Available From" value={validFrom} onChange={date => {setValidFrom(date); setDateSet(true)}}/>
                                 </MuiPickersUtilsProvider>
                             </div>
                         </div>

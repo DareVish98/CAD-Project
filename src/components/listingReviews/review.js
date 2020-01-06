@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Rating from '@material-ui/lab/Rating';
@@ -23,6 +23,9 @@ const useStyles = makeStyles(theme => ({
 export default function Review({res}) {
     const classes = useStyles();
     const [isAdd, setIsOpen] = React.useState(false);
+    const [reviews, setReviews] = React.useState(res);
+
+    useEffect(() => { setReviews(res) }, [res]);
 
     const close_box = () => {
         setIsOpen(false);
@@ -43,10 +46,10 @@ export default function Review({res}) {
                     <div>
                         <Grid>
                             <Typography variant="subtitle1" style={{display:'block'}}>
-                                {item.reviewer}: {item.rating}/5 stars
+                                {item.username}: {item.rating}/5 stars
                             </Typography>
                             <Typography variant="body2" style={{display:'block',padding:'10px 0 20px 20px'}}>
-                                {item.comment}
+                                {item.description}
                             </Typography>
                         </Grid>
                         <Divider light />
