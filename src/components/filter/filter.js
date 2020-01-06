@@ -72,6 +72,18 @@ export default function Filter({onFilter}) {
 
     const hide_box = () => {
         setOpen(false);
+        setGas(false);
+        setInternet(false);
+        setWater(false);
+        setEnergy(false);
+        setAddress('');
+        setBedMax('');
+        setBedMin('');
+        setContractMax('');
+        setContractMin('');
+        setPriceMax('');
+        setPriceMin('');
+        setValidFrom(Date.now);
     };
 
     function validate () {
@@ -104,6 +116,7 @@ export default function Filter({onFilter}) {
             water: water
         };
         onFilter(filter);
+        hide_box();
     }
 
     return (
@@ -165,7 +178,7 @@ export default function Filter({onFilter}) {
                                 </div>
                                 <div style={{paddingTop: 70, marginLeft: 230}}>
                                     <Button variant="contained" disabled={validate()} color="secondary" style={{}}
-                                            onClick={() => submitFilter}>
+                                            onClick={() => submitFilter()}>
                                         Apply
                                     </Button>
                                 </div>

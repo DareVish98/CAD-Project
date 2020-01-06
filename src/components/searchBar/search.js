@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -38,6 +38,8 @@ export default function SearchField({listings}) {
   const classes = useStyles();
   const [values, setValues] = useState(listings);
   const [search, setSearch] = useState('');
+
+	useEffect(() => { setValues(listings) }, [listings]);
   
   function handleSubmit(e) {
 	  e.preventDefault();
@@ -48,6 +50,9 @@ export default function SearchField({listings}) {
 				  result.push(listings[i]);
 		  }
 		  setValues(result);
+	  }
+	  else {
+	  	setValues(listings);
 	  }
   }
 
