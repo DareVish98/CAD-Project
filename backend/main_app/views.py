@@ -19,7 +19,7 @@ def thread_function(location, address):
     listing = Listing.objects.get(address=address)
     language = 'en-GB'
     keywordTypes = [('store', 'grocery_or_supermarket'), ('bus', 'bus_station'), ('food', 'restaurant'),
-                    ('gym', 'gym'), ('university', 'university')]
+                    ('gym', 'gym'), ('university', 'university'), ('post', 'post_office'), ('atm', 'atm')]
 
     for pair in keywordTypes:
         keyword = pair[0]
@@ -50,6 +50,7 @@ def listing_list(request):
     elif request.method == 'POST':
         user = CustomUser.objects.get(username=request.data["username"])
         request.data["username"]=user.id
+        request.data['selectedFromDate'] = request.data['selectedFromDate'][:10]
         serializer = ListingSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -132,7 +133,6 @@ class ListingReviewView(viewsets.ModelViewSet):
 @api_view(['POST'])
 def create_review(request):
     serializer = ReviewSerializer(data=request.data)
-    print(serializer.errors)
     if serializer.is_valid():
         serializer.save()
         return Response(status=status.HTTP_201_CREATED)
